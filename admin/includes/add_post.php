@@ -21,6 +21,10 @@ if (isset($_POST['create_post'])) {
     $create_post_query = mysqli_query($connection, $query);
 
     confirm($create_post_query);
+
+    $post_id = mysqli_insert_id($connection);
+
+    echo "<p class='bg-success'>Post created! <a href='../post.php?p_id={$post_id}'>View post</a> or <a href='posts.php'>Edit other posts</a></p>";
 }
 ?>
 
@@ -57,7 +61,11 @@ if (isset($_POST['create_post'])) {
 
     <div class="form-group">
         <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status">
+        <select name="post_status" id="">
+            <option value="draft">Select Options</option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+        </select>
     </div>
 
     <div class="form-group">
