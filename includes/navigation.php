@@ -27,16 +27,19 @@
 
                 ?>
                 <li><a href="admin">Admin</a></li>
-                <!--
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>-->
+                <?php
+                    if (isset($_SESSION['role'])) {
+                        if (isset($_GET['p_id']) && $_SESSION['role'] === "admin") {  
+                            $p_id = $_GET['p_id'];
+                            echo "<li><a href='admin/posts.php?source=edit_post&p_id=$p_id'>Edit Post</a></li>";
+                        } else {
+                            echo "no get set";
+                        }
+                    } else {
+                        echo "No role set";
+                        echo $_SESSION['role'];
+                    }
+                ?>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
