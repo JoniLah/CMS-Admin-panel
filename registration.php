@@ -24,6 +24,8 @@
 
             // Encrypt the password with salt
             $password = crypt($password, $salt);
+
+            
             
 
             $query = "INSERT INTO users(username, user_password, user_email, user_role) VALUES ('$username', '$password', '$email', 'subscriber')";

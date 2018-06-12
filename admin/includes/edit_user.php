@@ -27,10 +27,17 @@
         $user_email = $_POST['user_email'];
         $user_role = $_POST['user_role'];
 
+        //Encrypt password
+        $query = "SELECT rand_salt FROM users";
+        $select_randsalt = mysqli_query($connection, $query);
+        confirm($select_randsalt);
+        $row = mysqli_fetch_array($select_randsalt);
+        $salt = $row['rand_salt'];
+        $hashed_password = crypt($user_password, $salt);
 
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$user_password}', ";
+        $query .= "user_password = '{$hashed_password}', ";
         $query .= "user_firstname = '{$user_firstname}', ";
         $query .= "user_lastname = '{$user_lastname}', ";
         $query .= "user_email = '{$user_email}', ";
