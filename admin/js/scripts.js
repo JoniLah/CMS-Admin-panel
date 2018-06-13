@@ -1,10 +1,5 @@
 $(document).ready(function() {
-
-    //CKEditor 5
-    ClassicEditor.create(document.querySelector('#body')).catch( error => {
-        console.error(error);
-    });
-
+    // Select/unselect all checkboxes
     $("#selectAllBoxes").click(function(event){
         if (this.checked) {
             $(".checkBoxes").each(function() {
@@ -15,6 +10,12 @@ $(document).ready(function() {
                 this.checked = false;
             });
         }
+    });
+
+    var div_box = "<div id='load-screen'><div id='loading'></div></div>";
+    $("body").prepend(div_box);
+    $("#load-screen").delay(700).fadeOut(600, function() {
+        $(this).remove();
     });
 
 });
