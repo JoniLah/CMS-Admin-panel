@@ -113,7 +113,14 @@
                     echo "<td>{$post_status}</td>";
                     echo "<td><img width='100' src='../img/{$post_image}' alt=''></td>";
                     echo "<td>{$post_tags}</td>";
-                    echo "<td>{$post_comment_count}</td>";
+
+                    // Count the post comment count
+                    $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
+                    $comment_count_query = mysqli_query($connection, $query);
+                    confirm($comment_count_query);
+                    $count_comments = mysqli_num_rows($comment_count_query);
+
+                    echo "<td>{$count_comments}</td>";
                     echo "<td>{$post_views_count}</td>";
                     echo "<td>{$post_date}</td>";
                     echo "<td><a href='../post.php?p_id=$post_id'>View Post</a></td>";

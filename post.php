@@ -70,10 +70,6 @@
                         if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
                             $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($post_id, '$comment_author', '$comment_email', '$comment_content', 'unapproved', now())";
                             $create_comment = mysqli_query($connection, $query);
-
-                            // Increment the comment count of the post
-                            $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = $post_id";
-                            $increment_comment_count = mysqli_query($connection, $query);
                         } else {
                             echo "<script>alert('Fields should not be empty!');</script>";
                         }
