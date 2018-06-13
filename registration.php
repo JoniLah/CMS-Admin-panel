@@ -15,18 +15,8 @@
             $password = mysqli_real_escape_string($connection, $password);
             $email = mysqli_real_escape_string($connection, $email);
 
-            $password_query = "SELECT rand_salt FROM users";
-            $select_randsalt = mysqli_query($connection, $password_query);
-
-            // Retrieve the salt
-            $row = mysqli_fetch_array($select_randsalt);
-            $salt = $row['rand_salt'];
-
-            // Encrypt the password with salt
-            $password = crypt($password, $salt);
-
-            
-            
+            // An improved way to crypt the password
+            $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 
             $query = "INSERT INTO users(username, user_password, user_email, user_role) VALUES ('$username', '$password', '$email', 'subscriber')";
             mysqli_query($connection, $query);
@@ -35,10 +25,6 @@
         } else {
             $message = "Fields should not be empty!";
         }
-
-        
-
-        
     }
 ?>
 

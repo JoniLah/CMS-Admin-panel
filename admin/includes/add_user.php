@@ -11,6 +11,9 @@ if (isset($_POST['create_user'])) {
     $username = $_POST['username'];
     $user_password = $_POST['user_password'];
 
+    // Encryption
+    $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+
     move_uploaded_file($user_image_temp , "../img/$user_image");
 
     $query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role) ";

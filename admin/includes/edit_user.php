@@ -5,6 +5,9 @@
 
         $query = "SELECT * FROM users WHERE user_id = $user_id";
         $select_user = mysqli_query($connection, $query);
+        
+        // Check if the ID actually exists in the database
+        mysqli_num_rows($select_user) > 0 ? '' : header("Location: index.php");
 
         while ($row = mysqli_fetch_assoc($select_user)) {
             $user_id = $row['user_id'];
@@ -16,6 +19,8 @@
             $user_image = $row['user_image'];
             $user_role = $row['user_role'];
         }
+    } else {
+        header("Location: index.php");
     }
 
 
@@ -27,26 +32,35 @@
         $user_email = $_POST['user_email'];
         $user_role = $_POST['user_role'];
 
-        //Encrypt password
-        $query = "SELECT rand_salt FROM users";
-        $select_randsalt = mysqli_query($connection, $query);
-        confirm($select_randsalt);
-        $row = mysqli_fetch_array($select_randsalt);
-        $salt = $row['rand_salt'];
-        $hashed_password = crypt($user_password, $salt);
+        if (!empty($user_password)) {
+            $query = "SELECT user_password FROM users WHERE user_id = $user_id";
+            $get_user = mysqli_query($connection, $query);
+            confirm($get_user);
+
+            $row = mysqli_fetch_array($get_user);
+
+            $db_user_password = $row['user_password'];
+        }
 
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$hashed_password}', ";
         $query .= "user_firstname = '{$user_firstname}', ";
         $query .= "user_lastname = '{$user_lastname}', ";
         $query .= "user_email = '{$user_email}', ";
+
+        // If user changed the password
+        if ($db_user_password != $user_password) {
+            $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+            $query .= "user_password = '{$hashed_password}', ";
+        }
+
         $query .= "user_role = '{$user_role}' ";
         $query .= "WHERE user_id = {$user_id}";
 
         $update_user = mysqli_query($connection, $query);
-
         confirm($update_user);
+
+        echo "User updated! " . "<a href='users.php'>View users</a>";
 
         $_SESSION['username'] = $username;
         $_SESSION['firstname'] = $user_firstname;
@@ -66,7 +80,7 @@
 
     <div class="form-group">
         <label for="user_password">Password</label>
-        <input type="password" class="form-control" value="<?php echo $user_password; ?>"  name="user_password">
+        <input type="password" class="form-control"  name="user_password" autcomplete="off">
     </div>
 
     <div class="form-group">

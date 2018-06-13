@@ -13,7 +13,6 @@
             $user_password = $row['user_password'];
             $user_firstname = $row['user_firstname'];
             $user_lastname = $row['user_lastname'];
-            $user_role = $row['user_role'];
             $user_email = $row['user_email'];
             $user_image = $row['user_image'];
         }
@@ -29,20 +28,16 @@
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
         $user_email = $_POST['user_email'];
-        $user_role = $_POST['user_role'];
-
 
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
         $query .= "user_password = '{$user_password}', ";
         $query .= "user_firstname = '{$user_firstname}', ";
         $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_role = '{$user_role}' ";
+        $query .= "user_email = '{$user_email}' ";
         $query .= "WHERE username = '{$username}'";
 
         $update_user = mysqli_query($connection, $query);
-
         confirm($update_user);
     }
 
@@ -73,7 +68,7 @@
 
                             <div class="form-group">
                                 <label for="user_password">Password</label>
-                                <input type="password" class="form-control" value="<?php echo $user_password; ?>"  name="user_password">
+                                <input type="password" class="form-control" name="user_password" autocomplete="off">
                             </div>
 
                             <div class="form-group">
@@ -84,20 +79,6 @@
                             <div class="form-group">
                                 <label for="user_lastname">Last name</label>
                                 <input type="text" class="form-control" value="<?php echo $user_lastname; ?>" name="user_lastname">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="user_role">Role</label>
-                                <select name="user_role" id="">
-                                    <option value='subscriber'><?php echo $user_role; ?></option>
-                                    <?php
-                                        if ($user_role == 'admin') {
-                                            echo "<option value='subscriber'>subscriber</option>";
-                                        } else {
-                                            echo "<option value='admin'>admin</option>";
-                                        }
-                                    ?>
-                                </select>
                             </div>
 
                             <div class="form-group">
