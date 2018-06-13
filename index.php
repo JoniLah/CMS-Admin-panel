@@ -14,7 +14,30 @@
 
                 <?php
 
-                    $query = "SELECT * FROM posts ORDER BY post_id DESC";
+                    $per_page = 5; // Posts per page
+
+                    // Check the page url parameter
+                    if (isset($_GET['page'])) {    
+                        $page = $_GET['page'];
+                    } else {
+                        $page = null;
+                    }
+
+                    if ($page == null || $page == 1) {
+                        $page_1 = 0;
+                    } else {
+                        $page_1 = ($page * $per_page) - $per_page;
+                    }
+
+                    // Count the posts
+                    $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+                    $find_post_count_query = mysqli_query($connection, $post_query_count);
+                    $count = mysqli_num_rows($find_post_count_query);
+
+                    $count = ceil($count / $per_page);
+
+
+                    $query = "SELECT * FROM posts LIMIT $page_1, $per_page";
                     $select_all_posts_query = mysqli_query($connection, $query);
 
                     while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -115,4 +138,60 @@
 
         </div>
         <!-- /.row -->
+
+        <!-- Pagination -->
+        <ul class="pager"> 
+            <?php
+                // Previous (last page) button
+                if ($page <= 1) {
+                    echo '<li class="disabled"><a><i class="fas fa-angle-double-left"></i></a></li>';
+                    echo '<li class="disabled"><a><i class="fas fa-angle-left"></i></a></li>';
+                } else {
+                    $page_prev = $page - 1;
+                    echo '<li><a href="index.php"><i class="fas fa-angle-double-left"></i></a></li>';
+                    echo "<li><a href='index.php?page={$page_prev}'><i class='fas fa-angle-left'></i></a></li>";
+                }
+
+                // Keeps the number of page buttons to 5 at all times
+                $min_page = $page - 2;
+                $max_page = $page + 2;
+
+                if ($min_page < 2) {
+                    $max_page = 5;
+                }
+
+                if ($page == $count) {
+                    $min_page = $min_page - 2;
+                } else if ($page == ($count - 1)) {
+                    $min_page = $min_page - 1;
+                }
+
+                if ($min_page < 1) {
+                    $min_page = 1;
+                }
+                if ($max_page > $count) {
+                    $max_page = $count;
+                }
+
+                // Page buttons
+                for ($i = $min_page; $i <= $max_page; $i++) {
+                    if ($i == $page) {
+                    echo "<li class='active'><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                    } else {
+                    echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                    }
+                }
+                
+                // Next page button
+                if ($page >= $count) {
+                    echo '<li class="disabled"><a><i class="fas fa-angle-right"></i></a></li>';
+                    echo "<li class='disabled'><a><i class='fas fa-angle-double-right'></i></a></li>";
+                } else {
+                    $page_next = $page + 1;
+                    echo "<li><a href='index.php?page={$page_next}'><i class='fas fa-angle-right'></i></a></li>";
+                    echo "<li><a href='index.php?page={$count}'><i class='fas fa-angle-double-right'></i></a></li>";
+                }
+            ?>
+        </ul>
+
 <?php include "includes/footer.php"; ?>
