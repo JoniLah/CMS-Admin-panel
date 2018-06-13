@@ -53,5 +53,29 @@
         }
     }
 
+    function usersOnline() {
+        global $connection;
+        
+        $session = session_id();
+        $time = time();
+        $time_out_in_seconds = 30;
+        $time_out = ($time - $time_out_in_seconds);
+
+        $query = "SELECT * FROM users_online WHERE session = '$session'"; // Confirm the correct user
+        $session_query = mysqli_query($connection, $query);
+        $count_user_time = mysqli_num_rows($session_query); // Counts the time and session for each user
+
+        // If the user is new, add new row for the corresponding user
+        if ($count_user_time == null) {
+            mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES ('$session', '$time')");
+        } else { // Else just add the time for its session
+            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+        }
+
+        // Count the amount of users online
+        $users_online_query = mysqli_query($connection, "SELECT * FROM users_online WHERE time > '$time_out'");
+        return $count_user = mysqli_num_rows($users_online_query);
+    }
+
 
 ?>

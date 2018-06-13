@@ -169,6 +169,7 @@
                 if ($min_page < 1) {
                     $min_page = 1;
                 }
+
                 if ($max_page > $count) {
                     $max_page = $count;
                 }
@@ -176,7 +177,7 @@
                 // Page buttons
                 for ($i = $min_page; $i <= $max_page; $i++) {
                     if ($i == $page) {
-                    echo "<li class='active'><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                    echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
                     } else {
                     echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
                     }

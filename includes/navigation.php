@@ -33,12 +33,7 @@
                         if (isset($_GET['p_id']) && $_SESSION['role'] === "admin") {  
                             $p_id = $_GET['p_id'];
                             echo "<li><a href='admin/posts.php?source=edit_post&p_id=$p_id'>Edit Post</a></li>";
-                        } else {
-                            echo "no get set";
                         }
-                    } else {
-                        echo "No role set";
-                        echo $_SESSION['role'];
                     }
                 ?>
             </ul>
