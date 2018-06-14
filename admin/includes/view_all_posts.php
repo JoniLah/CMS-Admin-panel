@@ -20,6 +20,7 @@
                         $post_category_id = $row['post_category_id'];
                         $post_date = $row['post_date'];
                         $post_author = $row['post_author'];
+                        $post_user = $row['post_user'];
                         $post_status = $row['post_status'];
                         $post_image = $row['post_image'];
                         $post_tags = $row['post_tags'];
@@ -41,7 +42,7 @@
 ?>
 
 <form action="" method="post">
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover table-striped">
         <div id="bulkOptionsContainer" class="col-xs-4" style="padding: 0px;">
             <select class="form-control" name="bulk_options" id="">
                 <option value="">Select options</option>
@@ -61,7 +62,7 @@
             <tr>
                 <th><input id="selectAllBoxes" type="checkbox"></th>
                 <th>ID</th>
-                <th>Author</th>
+                <th>User/Author</th>
                 <th>Title</th>
                 <th>Category</th>
                 <th>Status</th>
@@ -82,6 +83,7 @@
         
                 while ($row = mysqli_fetch_assoc($select_posts)) {
                     $post_id = $row['post_id'];
+                    $post_user = $row['post_user'];
                     $post_author = $row['post_author'];
                     $post_title = $row['post_title'];
                     $post_category_id = $row['post_category_id'];
@@ -98,7 +100,15 @@
                     <?php
                     
                     echo "<td>{$post_id}</td>";
-                    echo "<td>{$post_author}</td>";
+
+                    if (!empty($post_author)) {
+                        echo "<td>{$post_author}</td>";
+                    } else if (!empty($post_user)) {
+                        echo "<td>$post_user</td>";
+                    }
+
+
+                    
                     echo "<td>{$post_title}</td>";
 
                     $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
