@@ -53,8 +53,8 @@
 
 <?php
     if (isset($_GET['change_to_admin'])) {
-        if (isset($_SESSION['user_role'])) {
-            if ($_SESSION['user_role'] == 'admin') {
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] == 'admin') {
                 $user_admin = mysqli_real_escape_string($connection, $_GET['change_to_admin']);
 
                 $query = "UPDATE users SET user_role = 'admin' WHERE user_id = $user_admin";
@@ -66,8 +66,8 @@
     }
 
     if (isset($_GET['change_to_subscriber'])) {
-        if (isset($_SESSION['user_role'])) {
-            if ($_SESSION['user_role'] == 'admin') {
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] == 'admin') {
                 $user_subscriber = mysqli_real_escape_string($connection, $_GET['change_to_subscriber']);
 
                 $query = "UPDATE users SET user_role = 'subscriber' WHERE user_id = $user_subscriber";
@@ -80,8 +80,8 @@
 
 
     if (isset($_GET['delete'])) {
-        if (isset($_SESSION['user_role'])) {
-            if ($_SESSION['user_role'] == 'admin') {
+        if (isset($_SESSION['role'])) {
+            if ($_SESSION['role'] == 'admin') {
                 $user_id_delete = mysqli_real_escape_string($connection, $_GET['delete']);
 
                 $query = "DELETE FROM users WHERE user_id = {$user_id_delete}";
