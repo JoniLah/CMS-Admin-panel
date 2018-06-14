@@ -118,9 +118,11 @@
                     $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
                     $comment_count_query = mysqli_query($connection, $query);
                     confirm($comment_count_query);
+                    $row = mysqli_fetch_array($comment_count_query);
+                    $comment_id = $row['comment_id'];
                     $count_comments = mysqli_num_rows($comment_count_query);
 
-                    echo "<td>{$count_comments}</td>";
+                    echo "<td><a href='post_comments.php?id={$post_id}'>{$count_comments}</a></td>";
                     echo "<td>{$post_views_count}</td>";
                     echo "<td>{$post_date}</td>";
                     echo "<td><a href='../post.php?p_id=$post_id'>View Post</a></td>";
