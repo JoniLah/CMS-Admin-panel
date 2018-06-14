@@ -106,9 +106,7 @@
                     } else if (!empty($post_user)) {
                         echo "<td>$post_user</td>";
                     }
-
-
-                    
+   
                     echo "<td>{$post_title}</td>";
 
                     $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
@@ -118,7 +116,7 @@
                         $cat_id = $row['cat_id'];
                         $cat_title = $row['cat_title'];
                     }
-                    echo "<td>{$cat_title}</td>";
+                    echo !empty($cat_title) ? "<td>{$cat_title}</td>" : "<td></td>";
 
                     echo "<td>{$post_status}</td>";
                     echo "<td><img width='100' src='../img/{$post_image}' alt=''></td>";
