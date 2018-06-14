@@ -3,6 +3,10 @@
 <?php
     $message = null; // Pop up message, not email message!
     if(isset($_POST['submit'])) {
+        
+
+        $path = '/usr/bin/perl';
+        set_include_path(get_include_path() . PATH_SEPARATOR . $path);
         /*
         $to = "donuto@feleroid.com";
         $subject = wordwrap($_POST['subject'], 70);
@@ -11,24 +15,24 @@
 
         // send email
         mail($to, $subject, $body, $header);*/
-        set_include_path("." . PATH_SEPARATOR . ($UserDir = dirname($_SERVER['DOCUMENT_ROOT'])) . "/pear/php" . PATH_SEPARATOR . get_include_path());
-        require_once "Mail.php";
+        require_once "home/usr/php/Mail.php";
+        $from = "From: " . $_POST['email'];
+        $to = "support@feleroid.com";
+        $subject = wordwrap($_POST['subject'], 70);
+        $body = $_POST['body'];
 
-        $host = "ssl://sub4.mail.dreamhost.com";
-        $username = "youremail@example.com";
-        $password = "your email password";
-        $port = "465";
-        $to = "address_form_will_send_TO@example.com";
-        $email_from = "youremail@example.com";
-        $email_subject = "Subject Line Here: " ;
-        $email_body = "whatever you like" ;
-        $email_address = "reply-to@example.com";
-
-        $headers = array ('From' => $email_from, 'To' => $to, 'Subject' => $email_subject, 'Reply-To' => $email_address);
-        $smtp = Mail::factory('smtp', array ('host' => $host, 'port' => $port, 'auth' => true, 'username' => $username, 'password' => $password));
-        $mail = $smtp->send($to, $headers, $email_body);
-
-
+        $host = "mail.zoner.fi";
+        $username = "support@feleroid.com";
+        $password = "f51y5h";
+        $headers = array ('From' => $from,
+        'To' => $to,
+        'Subject' => $subject);
+        $smtp = Mail::factory('smtp',
+        array ('host' => $host,
+            'auth' => true,
+            'username' => $username,
+            'password' => $password));
+        $mail = $smtp->send($to, $headers, $body);
         if (PEAR::isError($mail)) {
         echo("<p>" . $mail->getMessage() . "</p>");
         } else {
@@ -48,7 +52,7 @@
                     <div class="col-xs-6 col-xs-offset-3">
                         <div class="form-wrap">
                         <h1>Contact</h1>
-                            <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
+                            <form role="form" action="contact.php" method="post" id="login-form" autocomplete="off">
                                 <h6 class="text-center"><?php echo $message; ?></h6>
                                 <div class="form-group">
                                     <label for="email" class="sr-only">Email</label>
