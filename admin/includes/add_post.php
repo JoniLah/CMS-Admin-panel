@@ -35,13 +35,13 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
+        <label for="post_category">Category</label>
         <select name="post_category" id="post_category">
             <?php
                 $cat_id_edit = $_GET['edit'];
 
                 $query = "SELECT * FROM categories";
                 $select_categories_edit = mysqli_query($connection, $query);
-
                 confirm($select_categories_edit);
 
                 while ($row = mysqli_fetch_assoc($select_categories_edit)) {
@@ -55,9 +55,30 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
+        <label for="users">Post Author</label>
+        <select name="users" id="users">
+            <?php
+                $query = "SELECT * FROM users";
+                $select_users = mysqli_query($connection, $query);
+                confirm($select_users);
+                ?>
+                <!-- Set the logged in user as default poster -->
+                <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
+                <?php
+                while ($row = mysqli_fetch_assoc($select_users)) {
+                    $user_id = $row['user_id'];
+                    $username = $row['username'];
+
+                    echo "<option value='{$user_id}'>$username</option>";
+                }
+            ?>
+        </select>
+    </div>
+<!--
+    <div class="form-group">
         <label for="author">Post Author</label>
         <input type="text" class="form-control" name="author">
-    </div>
+    </div>-->
 
     <div class="form-group">
         <label for="post_status">Post Status</label>
