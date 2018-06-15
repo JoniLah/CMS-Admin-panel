@@ -34,27 +34,26 @@
                     $find_post_count_query = mysqli_query($connection, $post_query_count);
                     $count = mysqli_num_rows($find_post_count_query);
 
-                    $count = ceil($count / $per_page);
+                    if ($count < 1) {
+                        echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";
+                    } else {
+                        $count = ceil($count / $per_page);
+
+                        $query = "SELECT * FROM posts WHERE post_status = 'published' ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                        $select_all_posts_query = mysqli_query($connection, $query);
+
+                        while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
+                            $post_id = $row['post_id'];
+                            $post_title = $row['post_title'];
+                            $post_author = $row['post_author'];
+                            $post_user = $row['post_user'];
+                            $post_date = $row['post_date'];
+                            $post_image = $row['post_image'];
+                            $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
+                            $post_status = $row['post_status'];
 
 
-                    $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
-                    $select_all_posts_query = mysqli_query($connection, $query);
-
-                    while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-                        $post_id = $row['post_id'];
-                        $post_title = $row['post_title'];
-                        $post_author = $row['post_author'];
-                        $post_user = $row['post_user'];
-                        $post_date = $row['post_date'];
-                        $post_image = $row['post_image'];
-                        $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
-                        $post_status = $row['post_status'];
-
-                        if ($post_status !== "published") {
-                            //echo "<h1 class='text-center'>We're sorry, there aren't any published posts yet!";
-                        } else {
-                        ?>
-                            <!-- This is actually in the else statement -->
+                            ?>
                             <h1 class="page-header">
                                 Page Heading
                                 <small>Secondary Text</small>
@@ -75,62 +74,11 @@
                             <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                             <hr>
-                        <?php } ?>
-            <?php   } ?>
-
-            <!-- Blog Comments -->
-            <!-- Comments Form -->
-            <div class="well">
-                <h4>Leave a Comment:</h4>
-                <form role="form">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
+                        <?php 
+                        } // end of while loop
+                    } // end of else statement ?>
 
             <hr>
-
-            <!-- Posted Comments -->
-            <!-- Comment -->
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Start Bootstrap
-                        <small>August 25, 2014 at 9:30 PM</small>
-                    </h4>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-            </div>
-
-            <!-- Comment -->
-            <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="http://placehold.it/64x64" alt="">
-                </a>
-                <div class="media-body">
-                    <h4 class="media-heading">Start Bootstrap
-                        <small>August 25, 2014 at 9:30 PM</small>
-                    </h4>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                    <!-- Nested Comment -->
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placehold.it/64x64" alt="">
-                        </a>
-                        <div class="media-body">
-                            <h4 class="media-heading">Nested Start Bootstrap
-                                <small>August 25, 2014 at 9:30 PM</small>
-                            </h4>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
-                    <!-- End Nested Comment -->
-                </div>
-            </div>
 
             </div>
 
