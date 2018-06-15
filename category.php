@@ -19,9 +19,9 @@
 
                         // Check if we've been logged in as admin
                         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id";
+                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
                         } else {
-                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published'";
+                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published' ORDER BY post_id DESC";
                         }
 
                         $select_all_posts_query = mysqli_query($connection, $query);
@@ -33,6 +33,7 @@
                                 $post_id = $row['post_id'];
                                 $post_title = $row['post_title'];
                                 $post_author = $row['post_author'];
+                                $post_user = $row['post_user'];
                                 $post_date = $row['post_date'];
                                 $post_image = $row['post_image'];
                                 $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
@@ -50,17 +51,17 @@
     
                                 <!-- First Blog Post -->
                                 <h2>
-                                    <a href="post.php?p_id=<?php echo $post_id ?>"><?php echo $post_title ?></a>
+                                    <a href="post.php?p_id=<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                                 </h2>
                                 <p class="lead">
-                                    by <a href="index.php"><?php echo $post_author ?></a>
+                                    by <a href="index.php"><?php echo $post_user; ?></a>
                                 </p>
-                                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date ?></p>
+                                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                                 <hr>
                                 <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
                                 <hr>
-                                <p><?php echo $post_content ?></p>
-                                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                <p><?php echo $post_content; ?></p>
+                                <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
     
                                 <hr>
                     <?php   } // end of while loop

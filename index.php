@@ -60,8 +60,8 @@
 
                             ?>
                             <h1 class="page-header">
-                                Page Heading
-                                <small>Secondary Text</small>
+                                CMS Front-end
+                                <small>Articles</small>
                             </h1>
 
                             <!-- First Blog Post -->
@@ -76,7 +76,7 @@
                             <a href="post.php?p_id=<?php echo $post_id ?>"><img class="img-responsive" src="img/<?php echo $post_image; ?>" alt=""></a>
                             <hr>
                             <p><?php echo $post_content ?></p>
-                            <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                            <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                             <hr>
                         <?php 

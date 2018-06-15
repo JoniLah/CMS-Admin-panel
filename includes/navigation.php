@@ -45,7 +45,9 @@
 
                 ?>
                 <li class="vl"></li> <!-- Separator -->
-                <li class="<?php echo $registration_class; ?>"><a href="registration.php">Registration</a></li>
+                <?php if (!isset($_SESSION['role'])): ?>
+                    <li class="<?php echo $registration_class; ?>"><a href="registration.php">Registration</a></li>
+                <?php endif; ?>
                 <li class="<?php echo $contact_class; ?>"><a href="contact.php">Contact</a></li>
                 <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                     <li><a href="admin">Admin</a></li>

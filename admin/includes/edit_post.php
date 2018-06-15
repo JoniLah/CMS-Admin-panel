@@ -18,7 +18,7 @@
         $post_tags = $row['post_tags'];
         $post_comment_count= $row['post_comment_count'];
         $post_date = $row['post_date'];
-        $post_content = $row['post_content'];
+        $post_content = mysqli_real_escape_string($connection, $row['post_content']);
     }
 
     if (isset($_POST['update_post'])) {
@@ -30,7 +30,7 @@
         $post_image = $_FILES['image']['name'];
         $post_image_temp = $_FILES['image']['tmp_name'];
         $post_tags = $_POST['post_tags'];
-        $post_content = $_POST['post_content'];
+        $post_content = mysqli_real_escape_string($connection, $_POST['post_content']); 
 
         move_uploaded_file($post_image_temp, "../img/$post_image");
 

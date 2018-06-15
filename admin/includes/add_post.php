@@ -9,7 +9,7 @@ if (isset($_POST['create_post'])) {
     $post_image_temp = $_FILES['image']['tmp_name'];
 
     $post_tags = $_POST['post_tags'];
-    $post_content = $_POST['post_content'];
+    $post_content = mysqli_real_escape_string($connection, $_POST['post_content']);
     $post_date = date('d-m-y');
     $post_comment_count = 0;
 

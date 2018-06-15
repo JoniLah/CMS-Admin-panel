@@ -16,23 +16,22 @@
                     if (isset($_POST['search'])) {
                         $search = $_POST['search'];
 
-                        $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
+                        if (isset($_SESSION['user']) && $_SESSION['user'] == "admin") {
+                            $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' ORDER BY post_id DESC";
+                        } else {
+                            $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' ORDER BY post_id DESC";
+                        }
                         $search_query = mysqli_query($connection, $query);
 
-                        if (!$search_query) {
-                            die("Query Failed - " . mysqli_error($search_query));
-                        }
-
                         $count = mysqli_num_rows($search_query);
-                        echo $count;
-
                         if ($count == 0) {
-
+                            echo "<h2 class='text-center'>We're sorry, there's no posts available with '$search' tags!</h2>";
                         } else {
 
                             while ($row = mysqli_fetch_assoc($search_query)) {
                                 $post_title = $row['post_title'];
                                 $post_author = $row['post_author'];
+                                $post_user = $row['post_user'];
                                 $post_date = $row['post_date'];
                                 $post_image = $row['post_image'];
                                 $post_content = $row['post_content'];
@@ -40,22 +39,22 @@
                                 ?>
 
                                 <h1 class="page-header">
-                                    Page Heading
-                                    <small>Secondary Text</small>
+                                    Search Results for
+                                    <small><?php echo $search; ?></small>
                                 </h1>
 
                                 <!-- First Blog Post -->
                                 <h2>
-                                    <a href="#"><?php echo $post_title ?></a>
+                                    <a href="#"><?php echo $post_title; ?></a>
                                 </h2>
                                 <p class="lead">
-                                    by <a href="index.php"><?php echo $post_author ?></a>
+                                    by <a href="index.php"><?php echo $post_user; ?></a>
                                 </p>
-                                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date ?></p>
+                                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                                 <hr>
                                 <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
                                 <hr>
-                                <p><?php echo $post_content ?></p>
+                                <p><?php echo $post_content; ?></p>
                                 <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                                 <hr>
