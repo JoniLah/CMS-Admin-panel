@@ -77,11 +77,6 @@
 
         <hr>
 
-<script>
-    //CKEditor 5
-    ClassicEditor.create(document.querySelector('#body')).catch( error => {
-        console.error(error);
-    });
-</script>
+<script src="js/ckeditor.js"></script>
 
 <?php include "includes/footer.php";?>

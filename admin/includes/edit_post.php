@@ -155,3 +155,5 @@
         <input class="btn btn-primary" type="submit" name="update_post" value="Update Post">
     </div>
 </form>
+
+<script src="../js/ckeditor.js"></script>
