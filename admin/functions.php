@@ -92,5 +92,12 @@
     }
     usersOnline(); // Call the function
 
+    function recordCount($table) {
+        global $connection;
+        $select_all_items = mysqli_query($connection, "SELECT * FROM " . $table);
+        confirm($select_all_items);
+        return $result = mysqli_num_rows($select_all_items);
+    }
+
 
 ?>
