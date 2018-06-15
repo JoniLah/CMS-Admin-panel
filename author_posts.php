@@ -33,8 +33,8 @@
                         ?>
 
                         <h1 class="page-header">
-                            Page Heading
-                            <small>Secondary Text</small>
+                            Posts
+                            <small>by <?php echo $post_user; ?></small>
                         </h1>
 
                         <!-- First Blog Post -->

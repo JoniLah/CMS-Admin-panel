@@ -1,5 +1,10 @@
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
+<?php 
+    if (isset($_GET['category'])) {
+        $post_category_id = $_GET['category'];
+    }
+?>
 
     <!-- Navigation -->
     <?php include "includes/navigation.php"; ?>
@@ -11,11 +16,27 @@
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+                <h1 class="page-header">
+                    <?php
+                        $title_query = mysqli_query($connection, "SELECT cat_title FROM categories WHERE cat_id = $post_category_id");
+                        while ($row = mysqli_fetch_assoc($title_query)) {
+                            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                                $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
+                            } else {
+                                $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published' ORDER BY post_id DESC";
+                            }
+                            $select_all_posts_query = mysqli_query($connection, $query);
+                            if (mysqli_num_rows($select_all_posts_query) > 0) {
+                                echo $cat_title = $row['cat_title'];
+                            }
+                            
+                        }
+                    ?>
+                </h1>
 
                 <?php
 
                     if (isset($_GET['category'])) {
-                        $post_category_id = $_GET['category'];
 
                         // Check if we've been logged in as admin
                         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
@@ -39,15 +60,6 @@
                                 $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
     
                                 ?>
-    
-                                <h1 class="page-header">
-                                    <?php
-                                        $title_query = mysqli_query($connection, "SELECT cat_title FROM categories WHERE cat_id = $post_category_id");
-                                        while ($row = mysqli_fetch_assoc($title_query)) {
-                                            echo $cat_title = $row['cat_title'];
-                                        }
-                                    ?>
-                                </h1>
     
                                 <!-- First Blog Post -->
                                 <h2>
