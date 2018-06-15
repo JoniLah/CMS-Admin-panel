@@ -29,8 +29,13 @@
                         $page_1 = ($page * $per_page) - $per_page;
                     }
 
-                    // Count the posts
-                    $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+                    // Check if we've been logged in as admin
+                    if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                        $post_query_count = "SELECT * FROM posts"; // Count the posts
+                    } else {
+                        $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'"; // Count the posts
+                    }
+
                     $find_post_count_query = mysqli_query($connection, $post_query_count);
                     $count = mysqli_num_rows($find_post_count_query);
 
@@ -39,7 +44,7 @@
                     } else {
                         $count = ceil($count / $per_page);
 
-                        $query = "SELECT * FROM posts WHERE post_status = 'published' ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                        $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
                         $select_all_posts_query = mysqli_query($connection, $query);
 
                         while ($row = mysqli_fetch_assoc($select_all_posts_query)) {

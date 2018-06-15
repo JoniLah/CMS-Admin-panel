@@ -15,9 +15,15 @@
                 <?php
 
                     if (isset($_GET['category'])) {
-                        $post_category_id = $_GET['category'];           
+                        $post_category_id = $_GET['category'];
 
-                        $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published'";
+                        // Check if we've been logged in as admin
+                        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id";
+                        } else {
+                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published'";
+                        }
+
                         $select_all_posts_query = mysqli_query($connection, $query);
 
                         if (mysqli_num_rows($select_all_posts_query) < 1) {
@@ -34,8 +40,12 @@
                                 ?>
     
                                 <h1 class="page-header">
-                                    Page Heading
-                                    <small>Secondary Text</small>
+                                    <?php
+                                        $title_query = mysqli_query($connection, "SELECT cat_title FROM categories WHERE cat_id = $post_category_id");
+                                        while ($row = mysqli_fetch_assoc($title_query)) {
+                                            echo $cat_title = $row['cat_title'];
+                                        }
+                                    ?>
                                 </h1>
     
                                 <!-- First Blog Post -->
