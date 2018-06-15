@@ -56,8 +56,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome to Admin
-                            <small>Author</small>
+                            <?php echo $_SESSION['firstname'] . " " .  $_SESSION['lastname']; ?>
                         </h1>  
 
                         <form action="" method="post" enctype="multipart/form-data">
