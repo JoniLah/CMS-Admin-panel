@@ -19,44 +19,51 @@
 
                         // View count
                         $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $post_id";
-                        $send_query = mysqli_query($connection, $view_query);        
+                        $send_query = mysqli_query($connection, $view_query);
 
-                        $query = "SELECT * FROM posts WHERE post_id = $post_id";
+                        // Check if we've been logged in as admin
+                        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                            $query = "SELECT * FROM posts WHERE post_id = $post_id";
+                        } else {
+                            $query = "SELECT * FROM posts WHERE post_id = $post_id AND post_status = 'published'";
+                        }
+                        
                         $select_all_posts_query = mysqli_query($connection, $query);
 
-                        while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-                            $post_title = $row['post_title'];
-                            $post_author = $row['post_author'];
-                            $post_user = $row['post_user'];
-                            $post_date = $row['post_date'];
-                            $post_image = $row['post_image'];
-                            $post_content = $row['post_content'];
-
-                            ?>
-
-                            <h1 class="page-header">
-                                Page Heading
-                                <small>Secondary Text</small>
-                            </h1>
-
-                            <!-- First Blog Post -->
-                            <h2>
-                                <a href="#"><?php echo $post_title; ?></a>
-                            </h2>
-                            <p class="lead">
-                                by <a href="index.php"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>
-                            </p>
-                            <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
-                            <hr>
-                            <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
-                            <hr>
-                            <p><?php echo $post_content; ?></p>
-
-                            <hr>
-            <?php       } // end of while loop
-                    } else { // this is for the isset block
-                        header("Location: index.php"); // Redirect the visitor if incorrect id in the url
-                    } ?>
+                        if (mysqli_num_rows($select_all_posts_query) < 1) {
+                            echo "<h2 class='text-center'>The specific post couldn't be found!</h2>";
+                        } else {
+                            while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
+                                $post_title = $row['post_title'];
+                                $post_author = $row['post_author'];
+                                $post_user = $row['post_user'];
+                                $post_date = $row['post_date'];
+                                $post_image = $row['post_image'];
+                                $post_content = $row['post_content'];
+    
+                                ?>
+    
+                                <h1 class="page-header">
+                                    Posts
+                                </h1>
+    
+                                <!-- First Blog Post -->
+                                <h2>
+                                    <a href="#"><?php echo $post_title; ?></a>
+                                </h2>
+                                <p class="lead">
+                                    by <a href="index.php"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>
+                                </p>
+                                <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
+                                <hr>
+                                <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
+                                <hr>
+                                <p><?php echo $post_content; ?></p>
+    
+                                <hr>
+                    <?php   } // end of while loop ?>
+                           
+                    
                 <!-- Blog Comments -->
 
                 <?php
@@ -133,13 +140,21 @@
                         <?php
                     }
                 ?>
+                <?php
+                    } // This is the ending brackets for WHILE LOOP in the post query!
+                ?>
             </div>
-
             
-
             <!-- Blog Sidebar Widgets Column -->
             <?php include "includes/sidebar.php"; ?>
 
         </div>
         <!-- /.row -->
+<?php
+    // THIS IS THE ELSE STATEMENT FOR IF 'isset($_GET['p_id'])' AT THE BEGINNING OF THE FILE!
+    // Redirect user and don't display anything
+    } else { // this is for the isset block
+        header("Location: index.php"); // Redirect the visitor if incorrect id in the url
+    } 
+?>
 <?php include "includes/footer.php"; ?>
