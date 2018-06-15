@@ -1,6 +1,3 @@
-<?php
-require_once 'System.php';
-var_dump(class_exists('System'));?>
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
 
