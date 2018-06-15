@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         <?php
-            $query = "SELECT * FROM comments";
+            $query = "SELECT * FROM comments ORDER BY comment_id DESC";
             $select_comments = mysqli_query($connection, $query);
     
             while ($row = mysqli_fetch_assoc($select_comments)) {
@@ -34,7 +34,7 @@
                 echo "<td>{$comment_email}</td>";
                 echo "<td>{$comment_status}</td>";
 
-                $query = "SELECT * FROM posts WHERE post_id = $comment_post_id ORDER BY post_id DESC";
+                $query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
                 $select_post_id = mysqli_query($connection, $query);
                 while ($row = mysqli_fetch_assoc($select_post_id)) {
                     $post_id = $row['post_id'];
