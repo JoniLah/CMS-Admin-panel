@@ -23,13 +23,18 @@
                         $post_date = $row['post_date'];
                         $post_author = $row['post_author'];
                         $post_user = $row['post_user'];
+                        $post_user = $row['post_user'];
                         $post_status = $row['post_status'];
                         $post_image = $row['post_image'];
                         $post_tags = $row['post_tags'];
                         $post_content = $row['post_content'];
+
+                        if (empty($post_tags)) {
+                            $post_tags = "null";
+                        }
                     }
-                    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_status, post_image, post_tags, post_content) ";
-                    $query .= "VALUES($post_category_id, '$post_title', '$post_author', now(), '$post_status', '$post_image', '$post_tags', '$post_content')";
+                    $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_author, post_date, post_status, post_image, post_tags, post_content) ";
+                    $query .= "VALUES($post_category_id, '$post_title', '$post_user', '$post_author', now(), '$post_status', '$post_image', '$post_tags', '$post_content')";
                     $copy_query = mysqli_query($connection, $query);
                     confirm($copy_query);
                     break;
