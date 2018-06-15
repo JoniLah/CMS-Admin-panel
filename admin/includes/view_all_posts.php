@@ -85,7 +85,7 @@
         </thead>
         <tbody>
             <?php
-                $query = "SELECT * FROM posts ORDER BY post_id DESC";
+                $query = "SELECT * FROM posts, categories WHERE posts.post_category_id = categories.cat_id ORDER BY posts.post_id DESC";
                 $select_posts = mysqli_query($connection, $query);
         
                 while ($row = mysqli_fetch_assoc($select_posts)) {
@@ -100,6 +100,8 @@
                     $post_comment_count= $row['post_comment_count'];
                     $post_date = $row['post_date'];
                     $post_views_count = $row['post_views_count'];
+                    $cat_title = $row['cat_title'];
+                    $cat_id = $row['cat_id'];
                     
                     echo "<tr>";
                     ?>
@@ -115,16 +117,7 @@
                     }
    
                     echo "<td>{$post_title}</td>";
-
-                    $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
-                    $select_categories_id = mysqli_query($connection, $query);
-
-                    while ($row = mysqli_fetch_assoc($select_categories_id)) {
-                        $cat_id = $row['cat_id'];
-                        $cat_title = $row['cat_title'];
-                    }
                     echo !empty($cat_title) ? "<td>{$cat_title}</td>" : "<td></td>";
-
                     echo "<td>{$post_status}</td>";
                     echo "<td><img width='100' src='../img/{$post_image}' alt=''></td>";
                     echo "<td>{$post_tags}</td>";
