@@ -3,10 +3,6 @@
 <?php
     $message = null; // Pop up message, not email message!
     if(isset($_POST['submit'])) {
-        
-
-        $path = '/usr/bin/perl';
-        set_include_path(get_include_path() . PATH_SEPARATOR . $path);
         /*
         $to = "donuto@feleroid.com";
         $subject = wordwrap($_POST['subject'], 70);
@@ -15,29 +11,6 @@
 
         // send email
         mail($to, $subject, $body, $header);*/
-        require_once "home/usr/php/Mail.php";
-        $from = "From: " . $_POST['email'];
-        $to = "support@feleroid.com";
-        $subject = wordwrap($_POST['subject'], 70);
-        $body = $_POST['body'];
-
-        $host = "mail.zoner.fi";
-        $username = "support@feleroid.com";
-        $password = "f51y5h";
-        $headers = array ('From' => $from,
-        'To' => $to,
-        'Subject' => $subject);
-        $smtp = Mail::factory('smtp',
-        array ('host' => $host,
-            'auth' => true,
-            'username' => $username,
-            'password' => $password));
-        $mail = $smtp->send($to, $headers, $body);
-        if (PEAR::isError($mail)) {
-        echo("<p>" . $mail->getMessage() . "</p>");
-        } else {
-        echo("<p>Message successfully sent!</p>");
-        }
     }
 ?>
 
