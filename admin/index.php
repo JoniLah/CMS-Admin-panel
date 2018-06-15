@@ -113,6 +113,7 @@
                 <!-- /.row -->
 
                 <?php
+                    // Get the count for charts
                     $posts_published = checkStatus("posts", "post_status", "published");
                     $posts_draft = checkStatus("posts", "post_status", "draft");
                     $comments_unapproved = checkStatus("comments", "comment_status", "unapproved");

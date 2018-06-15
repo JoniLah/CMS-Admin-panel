@@ -100,6 +100,7 @@
         return $result = mysqli_num_rows($select_all_items);
     }
 
+    // Check the table status of defined column
     function checkStatus($table, $column, $status) {
         global $connection;
         $query = "SELECT * FROM $table WHERE $column = '$status'";
@@ -107,6 +108,4 @@
         confirm($result);
         return mysqli_num_rows($result);
     }
-
-
 ?>
