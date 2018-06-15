@@ -113,21 +113,10 @@
                 <!-- /.row -->
 
                 <?php
-                    $query = "SELECT * FROM posts WHERE post_status = 'published'";
-                    $select_all_published_posts = mysqli_query($connection, $query);
-                    $posts_published = mysqli_num_rows($select_all_published_posts);
-
-                    $query = "SELECT * FROM posts WHERE post_status = 'draft'";
-                    $select_all_draft_posts = mysqli_query($connection, $query);
-                    $posts_draft = mysqli_num_rows($select_all_draft_posts);
-
-                    $query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
-                    $select_all_unapproved_comments = mysqli_query($connection, $query);
-                    $comments_unapproved = mysqli_num_rows($select_all_unapproved_comments );
-
-                    $query = "SELECT * FROM users WHERE user_role = 'subscriber'";
-                    $select_all_sub_users = mysqli_query($connection, $query);
-                    $users_sub = mysqli_num_rows($select_all_sub_users);
+                    $posts_published = checkStatus("posts", "post_status", "published");
+                    $posts_draft = checkStatus("posts", "post_status", "draft");
+                    $comments_unapproved = checkStatus("comments", "comment_status", "unapproved");
+                    $users_sub = checkStatus("users", "user_role", "subscriber");
                 ?>
 
                 <div class="row">

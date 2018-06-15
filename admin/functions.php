@@ -92,11 +92,20 @@
     }
     usersOnline(); // Call the function
 
+    // Retrieves the count of defined item
     function recordCount($table) {
         global $connection;
         $select_all_items = mysqli_query($connection, "SELECT * FROM " . $table);
         confirm($select_all_items);
         return $result = mysqli_num_rows($select_all_items);
+    }
+
+    function checkStatus($table, $column, $status) {
+        global $connection;
+        $query = "SELECT * FROM $table WHERE $column = '$status'";
+        $result = mysqli_query($connection, $query);
+        confirm($result);
+        return mysqli_num_rows($result);
     }
 
 
