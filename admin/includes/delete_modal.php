@@ -16,7 +16,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <h2>Are you sure you want to delete this item?</h2>
+        <h3 class="text-center">Are you sure you want to delete this item?</h3>
       </div>
 
       <!-- Modal footer -->
