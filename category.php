@@ -83,7 +83,7 @@
                                 <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
     
                                 <hr>
-                            <?php endwhile;              
+                            <?php endwhile; mysqli_stmt_close($stmt);
                         } else { // no categories
                             header("Location: index.php");
                         }?>

@@ -14,7 +14,7 @@
                 while (mysqli_stmt_fetch($stmt)) {
                     ?>
                     <input class="form-control" value="<?php if (isset($cat_title)) {echo $cat_title;} ?>" type="text" name="cat_title">
-        <?php   } 
+        <?php   } mysqli_stmt_close($stmt);
             }
             
         ?>
@@ -26,6 +26,7 @@
                 mysqli_stmt_execute($stmt);
                 confirm($stmt);
                 redirect("categories.php");
+                mysqli_stmt_close($stmt);
             }
         ?>
     </div>
