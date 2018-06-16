@@ -109,7 +109,7 @@
         return mysqli_num_rows($result);
     }
 
-    function isAdmin($username = "") {
+    function isAdmin($username) {
         global $connection;
         $query = "SELECT user_role FROM users WHERE username = '$username'";
         $result = mysqli_query($connection, $query);
@@ -117,5 +117,23 @@
 
         $row = mysqli_fetch_array($result);
         return $row['user_role'] == "admin" ? true : false;
+    }
+
+    function usernameExists($username) {
+        global $connection;
+        $query = "SELECT username FROM users WHERE username = '$username'";
+        $result = mysqli_query($connection, $query);
+        confirm($result);
+
+        return mysqli_num_rows($result) > 0 ? true : false;
+    }
+
+    function emailExists($email) {
+        global $connection;
+        $query = "SELECT user_email FROM users WHERE user_email = '$email'";
+        $result = mysqli_query($connection, $query);
+        confirm($result);
+
+        return mysqli_num_rows($result) > 0 ? true : false;
     }
 ?>

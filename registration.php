@@ -1,5 +1,6 @@
-<?php  include "includes/db.php"; ?>
-<?php  include "includes/header.php"; ?>
+<?php include "includes/db.php"; ?>
+<?php include "includes/header.php"; ?>
+<?php include "admin/functions.php"; ?>
 <?php
     $message = null;
 
@@ -10,18 +11,24 @@
 
         // Check for empty fields
         if (!empty($username) && !empty($password) && !empty($email)) {
-            // Add security to the code
-            $username = mysqli_real_escape_string($connection, $username);
-            $password = mysqli_real_escape_string($connection, $password);
-            $email = mysqli_real_escape_string($connection, $email);
+            if (usernameExists($username)) {
+                $message = "This username already exists!";
+            } else if (emailExists($email)) {
+                $message = "This email already exists!";
+            } else {
+                // Add security to the code
+                $username = mysqli_real_escape_string($connection, $username);
+                $password = mysqli_real_escape_string($connection, $password);
+                $email = mysqli_real_escape_string($connection, $email);
 
-            // An improved way to crypt the password
-            $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+                // An improved way to crypt the password
+                $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 
-            $query = "INSERT INTO users(username, user_password, user_email, user_role) VALUES ('$username', '$password', '$email', 'subscriber')";
-            mysqli_query($connection, $query);
+                $query = "INSERT INTO users(username, user_password, user_email, user_role) VALUES ('$username', '$password', '$email', 'subscriber')";
+                mysqli_query($connection, $query);
 
-            $message = "Your registration has been submitted!";
+                $message = "Your registration has been submitted!";
+            }
         } else {
             $message = "Fields should not be empty!";
         }
