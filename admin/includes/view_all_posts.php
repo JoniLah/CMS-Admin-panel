@@ -140,7 +140,7 @@
                     <form method="post">
                         <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                         <?php
-                            echo '<td><input "href=javascript:void(0)" class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
+                            echo '<td><input rel="$post_id" href="javascript:void(0)" class="btn btn-danger delete_link" type="submit" name="delete" value="Delete"></td>';
                         ?>
                     </form>
 
@@ -156,7 +156,6 @@
 
 <?php
     if (isset($_POST['delete'])) {
-
         $post_id_delete = $_POST['post_id'];
 
         $query = "DELETE FROM posts WHERE post_id = {$post_id_delete}";
@@ -168,9 +167,10 @@
 <script>
     $(document).ready(function() {
         $(".delete_link").on('click', function() {
+            /*
             var id = $(this).attr("rel");
             var delete_url = "posts.php?delete=" + id + "";
-            $(".modal_delete_link").attr("href", delete_url);
+            $(".modal_delete_link").attr("href", delete_url);*/
             $("#myModal").modal("show");
         });
     });

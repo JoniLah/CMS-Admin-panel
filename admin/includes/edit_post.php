@@ -69,6 +69,10 @@
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
+        <a href="posts.php" class="btn btn-primary">&larr; Return</a>
+    </div>
+
+    <div class="form-group">
         <label for="title">Post Title</label>
         <input type="text" value="<?php echo $post_title; ?>" class="form-control" name="title">
     </div>
@@ -152,7 +156,7 @@
     </div>
 
     <div class="form-group">
-        <input class="btn btn-primary" type="submit" name="update_post" value="Update Post">
+        <input class="btn btn-success" type="submit" name="update_post" value="Update Post">
     </div>
 
 </form>
