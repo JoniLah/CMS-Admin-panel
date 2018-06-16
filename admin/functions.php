@@ -22,12 +22,10 @@
         if (isset($_POST['submit'])) {
             $cat_title = $_POST['cat_title'];
             if (strlen($cat_title) > 0) {
-                $query = "INSERT INTO categories(cat_title) VALUES('{$cat_title}')";
-                $create_category_query = mysqli_query($connection, $query);
-
-                if (!$create_category_query) {
-                    die("<h2>Query couldn't be executed - " . mysqli_error($connection));
-                }
+                $stmt = mysqli_prepare($connection, "INSERT INTO categories(cat_title) VALUES(?)");
+                mysqli_stmt_bind_param($stmt, "s", $cat_title);
+                mysqli_stmt_execute($stmt);
+                confirm($stmt);
                 echo "<h2>{$cat_title} added!</h2>";
             } else {
                 echo "<h2>Category cannot be blank!</h2>";
