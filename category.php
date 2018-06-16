@@ -1,5 +1,6 @@
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
+<?php include "admin/functions.php"; ?>
 <?php 
     if (isset($_GET['category'])) {
         $post_category_id = $_GET['category'];
@@ -20,7 +21,7 @@
                     <?php
                         $title_query = mysqli_query($connection, "SELECT cat_title FROM categories WHERE cat_id = $post_category_id");
                         while ($row = mysqli_fetch_assoc($title_query)) {
-                            if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                            if (isAdmin($_SESSION['username'])) {
                                 $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
                             } else {
                                 $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published' ORDER BY post_id DESC";
@@ -39,26 +40,32 @@
                     if (isset($_GET['category'])) {
 
                         // Check if we've been logged in as admin
-                        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
+                        if (isAdmin($_SESSION['username'])) {
+                            $stmt1 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? ORDER BY post_id DESC");
+
                         } else {
-                            $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published' ORDER BY post_id DESC";
+                            $stmt2 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? ORDER BY post_id DESC");
+                            $published = "published";
                         }
 
-                        $select_all_posts_query = mysqli_query($connection, $query);
-
-                        if (mysqli_num_rows($select_all_posts_query) < 1) {
-                            echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";
+                        if (isset($stmt1)) {
+                            mysqli_stmt_bind_param($stmt1, "i", $post_category_id);
+                            mysqli_stmt_execute($stmt1);
+                            mysqli_stmt_bind_result($stmt1, $post_id, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
+                            $stmt = $stmt1;
+                            mysqli_stmt_store_result($stmt);
                         } else {
-                            while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
-                                $post_id = $row['post_id'];
-                                $post_title = $row['post_title'];
-                                $post_author = $row['post_author'];
-                                $post_user = $row['post_user'];
-                                $post_date = $row['post_date'];
-                                $post_image = $row['post_image'];
-                                $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
-    
+                            mysqli_stmt_bind_param($stmt2, "is", $post_category_id, $published);
+                            mysqli_stmt_execute($stmt2);
+                            mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
+                            $stmt = $stmt2;
+                            mysqli_stmt_store_result($stmt);
+                        }
+
+                        if (mysqli_stmt_num_rows($stmt) < 1) {
+                            echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";
+                        }
+                            while (mysqli_stmt_fetch($stmt)):
                                 ?>
     
                                 <!-- First Blog Post -->
@@ -76,11 +83,10 @@
                                 <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
     
                                 <hr>
-                    <?php   } // end of while loop
-                        } // end of else statement                    
-                    } else { // no categories
-                        header("Location: index.php");
-                    }?>
+                            <?php endwhile;              
+                        } else { // no categories
+                            header("Location: index.php");
+                        }?>
 
             </div>
 
