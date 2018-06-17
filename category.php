@@ -21,7 +21,7 @@
                     <?php
                         $title_query = mysqli_query($connection, "SELECT cat_title FROM categories WHERE cat_id = $post_category_id");
                         while ($row = mysqli_fetch_assoc($title_query)) {
-                            if (isAdmin($_SESSION['username'])) {
+                            if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
                                 $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
                             } else {
                                 $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published' ORDER BY post_id DESC";
