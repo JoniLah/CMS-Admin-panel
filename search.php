@@ -3,6 +3,7 @@
 
     <!-- Navigation -->
     <?php include "includes/navigation.php"; ?>
+    <?php include "admin/functions.php"; ?>
 
     <!-- Page Content -->
     <div class="container">
@@ -16,7 +17,7 @@
                     if (isset($_POST['search'])) {
                         $search = $_POST['search'];
 
-                        if (isset($_SESSION['user']) && $_SESSION['user'] == "admin") {
+                        if (isAdmin($_SESSION['username'])) {
                             $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' ORDER BY post_id DESC";
                         } else {
                             $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' ORDER BY post_id DESC";

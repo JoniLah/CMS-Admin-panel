@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteRule ^(index|contact|registration|admin)$ $1.php [NC,L]
+RewriteRule ^(index|contact|registration|admin|search)$ $1.php [NC,L]
 
 RewriteRule ^post/(\d+)$ post.php?p_id=$1 [NC,L]
 

@@ -1,5 +1,6 @@
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
+<?php include "admin/functions.php"; ?>
 
     <!-- Navigation -->
     <?php include "includes/navigation.php"; ?>
@@ -35,9 +36,10 @@
                     }
 
                     // Check if we've been logged in as admin
-                    if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+                    if (isAdmin($_SESSION['username'])) {
                         $post_query_count = "SELECT * FROM posts"; // Count the posts
                     } else {
+                        //TODO: PREPARED STATEMENT
                         $post_query_count = "SELECT * FROM posts WHERE post_status = 'published'"; // Count the posts
                     }
 
