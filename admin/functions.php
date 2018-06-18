@@ -194,6 +194,10 @@
         }
     }
 
+    function imgPlaceholder($img = null) {
+        return !$img ? $_SERVER['DOCUMENT_ROOT'] . "/cms/img/placeholder-images.jpg" : $img; 
+    }
+
 
     
 ?>

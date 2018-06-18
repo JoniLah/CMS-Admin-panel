@@ -4,9 +4,12 @@
 <?php include_once "admin/functions.php"; ?>
 
 <?php
-    if (!ifMethod("get") && !isset($_GET['forgot'])) {
+
+    require "./vendor/autoload.php";
+
+    /*if (!ifMethod("get") || !isset($_GET['forgot'])) {
         redirect("/cms");
-    }
+    }*/
 
     if (isset($_POST['recover-submit'])) {
         if (isset($_POST['email'])) {
@@ -19,6 +22,31 @@
                     mysqli_stmt_bind_param($stmt, "s", $email);
                     mysqli_stmt_execute($stmt);
                     mysqli_stmt_close($stmt);
+
+                    // Configure PHPMailer
+                    $mail = new PHPMailer();
+                    try {
+                        $mail->isSMTP();                                      // Set mailer to use SMTP
+                        $mail->Host = Config::SMTP_HOST;                      // Specify main and backup SMTP servers
+                        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                        $mail->Username = Config::SMTP_USER;                  // SMTP username
+                        $mail->Password = Config::SMTP_PASSWORD;              // SMTP password
+                        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                        $mail->Port = Config::SMTP_PORT;                      // TCP port to connect to
+                        $mail->isHTML(true);                                  // Set email format to HTML
+
+                        $mail->setFrom("joni.lahdesmaki@hotmail.fi", "Joni Lähdesmäki");
+                        $mail->addAddress($email); // Add a recipient
+
+                        $mail->Subject = "This is a test email ää";
+                        $mail->Body = "<h2>Please click <a href='http://localhost/cms/reset.php?email=" . $email . "&token=" . $token . "'>here</a> to reset your password</h2>";
+                        $mail->CharSet = "UTF-8";
+
+                        $mail->send();
+                        echo "<h2 class='text-center'>Password reset link has been sent to your email!</h2>";  
+                    } catch (Exception $e) {
+                        echo "<h2 class='text-center'>Message couldn't be sent! Mailer error: $mail->ErrorInfo</h2>";
+                    }
                 } else {
                     echo "<h2 class='text-center'>" . mysqli_error($connection) . "</h2>";
                 }
@@ -28,7 +56,6 @@
         }
     }
 ?>
-
 
 <!-- Page Content -->
 <div class="container">

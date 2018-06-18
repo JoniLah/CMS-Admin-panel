@@ -2,10 +2,12 @@
 <?php
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            loginUser($_POST['username'], $_POST['password']);
-        } else {
-            redirect("/cms");
+        if (isset($_POST['login'])) {
+            if (isset($_POST['username']) && isset($_POST['password'])) {
+                loginUser($_POST['username'], $_POST['password']);
+            } else {
+                redirect("/cms");
+            }
         }
     }
 
