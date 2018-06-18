@@ -7,7 +7,21 @@
     }
 
     function redirect($location) {
-        return header("Location: " . $location);
+        header("Location: " . $location);
+        exit;
+    }
+
+    // Checks for POST or GET methods
+    function ifMethod($method = null) {
+        return $_SERVER['REQUEST_METHOD'] == strtoupper($method) ? true: false;
+    }
+
+    function isLoggedIn() {
+        return isset($_SESSION['role']) ? true : false;
+    }
+
+    function redirectLoggedInUser($redirectLocation = null) {
+        isLoggenIn() ? redirect($redirectLocation) : "";
     }
 
     function confirm($result) {
