@@ -1,8 +1,24 @@
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
 <?php include_once "admin/functions.php"; ?>
-<?php 
-    $message = null;
+<?php
+    require("vendor/autoload.php");
+
+    $dotenv = new \Dotenv\Dotenv(__DIR__);
+    $dotenv->load();
+
+    $options = array(
+        'cluster' => 'eu',
+        'encrypted' => true
+    );
+
+    $pusher = new Pusher\Pusher(
+        getenv('APP_KEY'),
+        getenv('APP_SECRET'),
+        getenv('APP_ID'),
+        $options
+    );
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $username = trim($_POST['username']);
         $email = trim($_POST['email']);
@@ -71,6 +87,8 @@
 
         if (empty($error)) {
             registerUser($username, $email, $password);
+            $data['message'] = "A new registered user: " . $username;
+            $pusher->trigger("notifications", "new_user", $data);
             loginUser($username, $password);
         }
     }

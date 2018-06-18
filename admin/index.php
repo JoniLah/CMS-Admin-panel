@@ -160,3 +160,21 @@
         <!-- /#page-wrapper -->
 
 <?php include "includes/footer.php"; ?>
+
+<script>
+    $(document).ready(function() {
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+        
+        const pusher = new Pusher('2f32002e2acd95219bec', {
+            cluster: 'eu',
+            encrypted: true
+        });
+
+        const channel = pusher.subscribe('notifications');
+            channel.bind('new_user', function(data) {
+            //alert(data.message);
+            toastr.success(data.message);
+        });
+    });
+</script>
