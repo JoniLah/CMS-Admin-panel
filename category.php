@@ -1,6 +1,6 @@
 <?php include "includes/db.php"; ?>
 <?php include "includes/header.php"; ?>
-<?php include "admin/functions.php"; ?>
+<?php include_once "admin/functions.php"; ?>
 <?php 
     if (isset($_GET['category'])) {
         $post_category_id = $_GET['category'];

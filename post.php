@@ -87,7 +87,7 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <form action="/cms/contact" method="post" role="form">
+                    <form method="post" role="form">
                         <div class="form-group">
                             <label for="author">Author</label>
                             <input class="form-control" type="text" name="comment_author">

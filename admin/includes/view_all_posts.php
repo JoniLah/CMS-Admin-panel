@@ -27,7 +27,7 @@
                         $post_status = $row['post_status'];
                         $post_image = $row['post_image'];
                         $post_tags = $row['post_tags'];
-                        $post_content = $row['post_content'];
+                        $post_content = mysqli_real_escape_string($connection, $row['post_content']);
 
                         if (empty($post_tags)) {
                             $post_tags = "null";

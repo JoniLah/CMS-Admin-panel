@@ -1,11 +1,5 @@
 <?php
 
-    // Security function
-    function escape($string) {
-        global $connection;
-        mysqli_real_escape_string($connection, trim($string));
-    }
-
     function redirect($location) {
         header("Location: " . $location);
         exit;
