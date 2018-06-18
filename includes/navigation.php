@@ -26,6 +26,7 @@
                         $category_class = "";
                         $registration_class = "";
                         $contact_class = "";
+                        $login_class = "";
 
                         // Check which page we're at
                         $page_name = basename($_SERVER['PHP_SELF']);
@@ -35,6 +36,8 @@
                             $category_class = "active";
                         } else if ($page_name == "registration.php") {
                             $registration_class = "active";
+                        } else if ($page_name == "login.php") {
+                            $login_class = "active";
                         } else if ($page_name == "contact.php") {
                             $contact_class = "active";
                         }
@@ -45,6 +48,11 @@
 
                 ?>
                 <li class="vl"></li> <!-- Separator -->
+                <?php if (!isset($_SESSION['role'])): ?>
+                    <li class="<?php echo $login_class; ?>"><a href="/cms/login">Login</a></li>
+                <?php else: ?>
+                    <li><a href="/cms/includes/logout.php">Logout</a></li>
+                <?php endif; ?>
                 <?php if (!isset($_SESSION['role'])): ?>
                     <li class="<?php echo $registration_class; ?>"><a href="/cms/registration">Registration</a></li>
                 <?php endif; ?>

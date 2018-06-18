@@ -7,10 +7,10 @@
 <?php
     if (isset($_SESSION['role'])) {
         if($_SESSION['role'] !== "admin") {
-            header("Location: ../index.php");
+            header("Location: /cms/");
         }
     } else {
-        header("Location: ../index.php");
+        header("Location: /cms/");
     }
 
 ?>
