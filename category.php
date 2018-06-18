@@ -40,10 +40,10 @@
                     if (isset($_GET['category'])) {
 
                         // Check if we've been logged in as admin
-                        if (isAdmin($_SESSION['username'])) {
+                        if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
                             $stmt1 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? ORDER BY post_id DESC");
 
-                        } else {
+                        } else if ((isset($_SESSION['username']) && !isAdmin($_SESSION['username'])) || (!isset($_SESSION['username']))) {
                             $stmt2 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? ORDER BY post_id DESC");
                             $published = "published";
                         }
@@ -73,19 +73,19 @@
                                     <a href="/cms/post/<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                                 </h2>
                                 <p class="lead">
-                                    by <a href="index.php"><?php echo $post_user; ?></a>
+                                    by <a href="/cms/author_posts/<?php echo empty($post_author) ? $post_user : $post_author; ?>&p_id/<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
                                 </p>
                                 <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                                 <hr>
                                 <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
                                 <hr>
                                 <p><?php echo $post_content; ?></p>
-                                <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                                <a class="btn btn-primary" href="/cms/post/<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
     
                                 <hr>
                             <?php endwhile; mysqli_stmt_close($stmt);
                         } else { // no categories
-                            header("Location: index.php");
+                            header("Location: /cms/");
                         }?>
 
             </div>

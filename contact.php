@@ -25,7 +25,7 @@
                     <div class="col-xs-6 col-xs-offset-3">
                         <div class="form-wrap">
                         <h1>Contact</h1>
-                            <form role="form" action="contact.php" method="post" id="login-form" autocomplete="off">
+                            <form role="form" action="/cms/contact" method="post" id="login-form" autocomplete="off">
                                 <h6 class="text-center"><?php echo $message; ?></h6>
                                 <div class="form-group">
                                     <label for="email" class="sr-only">Email</label>

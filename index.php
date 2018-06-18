@@ -36,7 +36,7 @@
                     }
 
                     // Check if we've been logged in as admin
-                    if (isAdmin($_SESSION['username'])) {
+                    if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
                         $post_query_count = "SELECT * FROM posts"; // Count the posts
                     } else {
                         //TODO: PREPARED STATEMENT
@@ -69,7 +69,7 @@
 
                             <!-- First Blog Post -->
                             <h2>
-                                <a href="post/<?php echo $post_id ?>"><?php echo $post_title ?></a>
+                                <a href="post/<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                             </h2>
                             <p class="lead">
                             by <a href="author_posts.php?author=<?php echo empty($post_author) ? $post_user : $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>

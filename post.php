@@ -52,7 +52,7 @@
                                     <a href="#"><?php echo $post_title; ?></a>
                                 </h2>
                                 <p class="lead">
-                                    by <a href="index.php"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>
+                                    by <a href="/cms/author_posts/<?php echo empty($post_author) ? $post_user : $post_author; ?>"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>
                                 </p>
                                 <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                                 <hr>
@@ -87,7 +87,7 @@
                 <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
-                    <form action="" method="post" role="form">
+                    <form action="/cms/contact" method="post" role="form">
                         <div class="form-group">
                             <label for="author">Author</label>
                             <input class="form-control" type="text" name="comment_author">

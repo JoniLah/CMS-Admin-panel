@@ -5,3 +5,5 @@ RewriteRule ^(index|contact|registration|admin|search)$ $1.php [NC,L]
 RewriteRule ^post/(\d+)$ post.php?p_id=$1 [NC,L]
 
 RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L]
+
+RewriteRule ^author_posts/(.+)$ author_posts.php?author=$1&p_id=$2 [NC,L]
