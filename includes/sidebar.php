@@ -1,3 +1,15 @@
+<?php
+
+    if (ifMethod("post")) {
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            loginUser($_POST['username'], $_POST['password']);
+        } else {
+            redirect("/cms/");
+        }
+    }
+
+?>
+
 <div class="col-md-4">
     <!-- Blog Search Well -->
     <div class="well">
@@ -26,7 +38,7 @@
 
         <?php else: ?>
             <h4>Login</h4>
-            <form action="includes/login.php" method="post">
+            <form method="post">
                 <div class="form-group">
                     <input name="username" type="text" class="form-control" placeholder="Username">
                 </div>
