@@ -131,20 +131,20 @@
 
     function usernameExists($username) {
         global $connection;
-        $query = "SELECT username FROM users WHERE username = '$username'";
-        $result = mysqli_query($connection, $query);
-        confirm($result);
-
-        return mysqli_num_rows($result) > 0 ? true : false;
+        if ($stmt = mysqli_prepare($connection, "SELECT username FROM users WHERE username = ?")) {
+            mysqli_stmt_bind_param($stmt, "s", $username);
+            mysqli_stmt_execute($stmt);
+            return mysqli_stmt_num_rows() > 0 ? true : false;
+        }
     }
 
     function emailExists($email) {
         global $connection;
-        $query = "SELECT user_email FROM users WHERE user_email = '$email'";
-        $result = mysqli_query($connection, $query);
-        confirm($result);
-
-        return mysqli_num_rows($result) > 0 ? true : false;
+        if ($stmt = mysqli_prepare($connection, "SELECT user_email FROM users WHERE user_email = ?")) {
+            mysqli_stmt_bind_param($stmt, "s", $email);
+            mysqli_stmt_execute($stmt);
+            return mysqli_stmt_num_rows() > 0 ? true : false;
+        }
     }
 
     function registerUser($username, $email, $password) {
@@ -181,13 +181,19 @@
             $db_user_lastname = $row['user_lastname'];
             $db_user_role = $row['user_role'];
 
+            // We're logged in
             if (password_verify($password, $db_user_password)) {
                 $_SESSION['user_id'] = $db_user_id;
                 $_SESSION['username'] = $db_username;
                 $_SESSION['firstname'] = $db_user_firstname;
                 $_SESSION['lastname'] = $db_user_lastname;
                 $_SESSION['role'] = $db_user_role;
-                redirect("/cms/admin");
+                $result = mysqli_query($connection, "SELECT * FROM user_settings WHERE user_settings_id = $db_user_id");
+                confirm($result);
+                while ($row = mysqli_fetch_array($result)) {
+                    $redirection = $row['user_redirection'];
+                    $redirection == "admin" ? redirect("/cms/admin") : redirect("/cms");
+                }
             } else {
                 return false;
             }
@@ -197,7 +203,5 @@
     function imgPlaceholder($img = null) {
         return !$img ? $_SERVER['DOCUMENT_ROOT'] . "/cms/img/placeholder-images.jpg" : $img; 
     }
-
-
     
 ?>
