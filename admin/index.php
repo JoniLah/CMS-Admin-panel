@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Welcome to Admin 
+                            Welcome to Admin panel,
                             <small><?php echo $_SESSION['username']; ?>!</small>
                         </h1>
                     </div>
@@ -118,6 +118,7 @@
                     $posts_draft = checkStatus("posts", "post_status", "draft");
                     $comments_unapproved = checkStatus("comments", "comment_status", "unapproved");
                     $users_sub = checkStatus("users", "user_role", "subscriber");
+                    $users_admin = checkStatus("users", "user_role", "admin");
                 ?>
 
                 <div class="row">
@@ -129,8 +130,8 @@
                             var data = google.visualization.arrayToDataTable([
                             ['Date', 'Count'],
                             <?php
-                                $element_text = ['All Posts', 'Active Posts', 'Draft Posts', 'Comments', 'Pending Comments', 'Users', 'Subscribers', 'Categories'];
-                                $element_count = [$posts, $posts_published, $posts_draft, $comments, $comments_unapproved, $users, $users_sub, $categories];
+                                $element_text = ['All Posts', 'Active Posts', 'Draft Posts', 'Comments', 'Pending Comments', 'Users', 'Administrators','Subscribers', 'Categories'];
+                                $element_count = [$posts, $posts_published, $posts_draft, $comments, $comments_unapproved, $users, $users_admin, $users_sub, $categories];
 
                                 for($i = 0; $i < count($element_count); $i++) {
                                     echo "['{$element_text[$i]}'" . ", " . "{$element_count[$i]}],";
