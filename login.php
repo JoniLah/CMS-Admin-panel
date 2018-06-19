@@ -7,7 +7,8 @@
 
     if (ifMethod("post")) {
         if (isset($_POST['username']) && isset($_POST['password'])) {
-            loginUser($_POST['username'], $_POST['password']);
+			loginUser($_POST['username'], $_POST['password']);
+			redirect("/cms");
         } else {
             redirect("/cms/login");
         }

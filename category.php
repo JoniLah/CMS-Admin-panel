@@ -14,6 +14,14 @@
     <div class="container">
 
         <div class="row">
+            <?php
+                // Pagination init
+                $per_page = $GLOBALS['per_page']; // Posts per page
+                // Check the page url parameter
+                isset($_GET['page']) ? $page = $_GET['page'] : $page = null;
+                // Set the numbers for pagination buttons
+                ($page == null || $page == 1) ? $page_1 = 0 : $page_1 = ($page * $per_page) - $per_page;
+            ?>
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
@@ -65,7 +73,9 @@
                         if (mysqli_stmt_num_rows($stmt) < 1) {
                             echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";
                         }
+                        $count = mysqli_stmt_num_rows($stmt);
                             while (mysqli_stmt_fetch($stmt)):
+                                $count = ceil($count / $per_page);
                                 ?>
     
                                 <!-- First Blog Post -->
@@ -95,4 +105,8 @@
 
         </div>
         <!-- /.row -->
+
+        <!-- Pagination -->
+        <?php include "includes/pagination.php"; ?>
+
 <?php include "includes/footer.php"; ?>

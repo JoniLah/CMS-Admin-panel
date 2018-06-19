@@ -17,7 +17,7 @@
                     if (isset($_POST['search'])) {
                         $search = $_POST['search'];
 
-                        if (isAdmin($_SESSION['username'])) {
+                        if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
                             $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' ORDER BY post_id DESC";
                         } else {
                             $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'published' ORDER BY post_id DESC";

@@ -133,8 +133,8 @@
                     echo "<td><a href='post_comments.php?id={$post_id}'>{$count_comments}</a></td>";
                     echo "<td>{$post_views_count}</td>";
                     echo "<td>{$post_date}</td>";
-                    echo "<td><a class='btn btn-info' href='../post.php?p_id=$post_id'>View Post</a></td>";
-                    echo "<td><a class='btn btn-warning' href='posts.php?source=edit_post&p_id={$post_id}'><i class='fa fa-fw fa-trash'></i> Edit</a></td>";
+                    echo "<td><a class='btn btn-info' href='../post.php?p_id=$post_id'><i class='far fa-eye'></i> View Post</a></td>";
+                    echo "<td><a class='btn btn-warning' href='posts.php?source=edit_post&p_id={$post_id}'><i class='fas fa-pencil-alt'></i> Edit</a></td>";
                     ?>
 
                     <form method="post">

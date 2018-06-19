@@ -1,6 +1,8 @@
 <?php
     ob_start();
 
+    $GLOBALS['per_page'] = 5; // Pagination variable
+
     $db['db_host'] = "localhost";
     $db['db_user'] = "root";
     $db['db_pass'] = "";
