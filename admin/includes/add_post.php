@@ -4,6 +4,7 @@ if (isset($_POST['create_post'])) {
     $post_user = $_POST['post_user'];
     $post_category_id = $_POST['post_category'];
     $post_status = $_POST['post_status'];
+    $post_description = $_POST['description'];
 
     $post_image = $_FILES['image']['name'];
     $post_image_temp = $_FILES['image']['tmp_name'];
@@ -15,15 +16,15 @@ if (isset($_POST['create_post'])) {
 
     move_uploaded_file($post_image_temp, "../img/$post_image");
 
-    $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_comment_count, post_status) ";
-    $query .= "VALUES('{$post_category_id}', '{$post_title}', '{$post_user}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comment_count}', '{$post_status}') ";
-
-    $create_post_query = mysqli_query($connection, $query);
-
-    confirm($create_post_query);
-
+    $query = "INSERT INTO posts(post_category_id, post_title, post_brief, post_user, post_date, post_image, post_content, post_tags, post_comment_count, post_status) ";
+    $query .= "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    if ($stmt = mysqli_prepare($connection, $query)) {
+        mysqli_stmt_bind_param($stmt, "isssssssis", $post_category_id, $post_title, $post_description, $post_user, $post_date, $post_image, $post_content, $post_tags, $post_comment_count, $post_status);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+    // Returns the id (generated with AUTO_INCREMENT) used in the last query.
     $post_id = mysqli_insert_id($connection);
-
     echo "<p class='bg-success'>Post created! <a href='../post.php?p_id={$post_id}'>View post</a> or <a href='posts.php'>Edit other posts</a></p>";
 }
 ?>
@@ -35,21 +36,22 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
+        <label for="description">Short Description</label> <i class="far fa-question-circle" data-toggle="tooltip" title="A short description that displays in the article preview only."></i>
+        <input type="text" class="form-control" name="description">
+    </div>
+
+    <div class="form-group">
         <label for="post_category">Category</label>
         <div class="custom-select" style="width: 200px;">
             <select name="post_category" id="post_category">
                 <?php
                     $cat_id_edit = $_GET['edit'];
-
-                    $query = "SELECT * FROM categories";
-                    $select_categories_edit = mysqli_query($connection, $query);
-                    confirm($select_categories_edit);
-
-                    while ($row = mysqli_fetch_assoc($select_categories_edit)) {
-                        $cat_id = $row['cat_id'];
-                        $cat_title = $row['cat_title'];
-
-                        echo "<option value='{$cat_id}'>$cat_title</option>";
+                    if ($stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories")) {
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
+                        while(mysqli_stmt_fetch($stmt)) {
+                            echo "<option value='{$cat_id}'>$cat_title</option>";
+                        }
                     }
                 ?>
             </select>
@@ -61,32 +63,29 @@ if (isset($_POST['create_post'])) {
         <div class="custom-select" style="width: 200px;">
             <select name="post_user">
                 <?php
-                    $query = "SELECT * FROM users";
-                    $select_users = mysqli_query($connection, $query);
-                    confirm($select_users);
-                    ?>
-                    <!-- Set our logged in user as default -->
-                    <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
-                    <?php
+                    if ($stmt = mysqli_prepare($connection, "SELECT user_id, username FROM users")) {
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_bind_result($stmt, $user_id, $username);
+                        ?>
 
-                    while ($row = mysqli_fetch_assoc($select_users)) {
-                        $user_id = $row['user_id'];
-                        $username = $row['username'];
+                        <!-- Set our logged in user as default -->
+                        <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
 
-                        echo "<option value='{$username}'>$username</option>";
+                        <?php
+                        while(mysqli_stmt_fetch($stmt)) {
+                            if ($username !== $_SESSION['username']) {
+                                echo "<option value='{$username}'>$username</option>";
+                            }
+                            
+                        }
                     }
                 ?>
             </select>
         </div>
     </div>
-<!--
-    <div class="form-group">
-        <label for="author">Post Author</label>
-        <input type="text" class="form-control" name="author">
-    </div>-->
 
     <div class="form-group">
-        <label for="post_status">Post Status</label>
+        <label for="post_status">Post Status</label> <i class="far fa-question-circle" data-toggle="tooltip" title="Draft is only displayed to admin users in the front page."></i>
         <div class="custom-select" style="width: 200px;">
             <select name="post_status" id="">
                 <option value="draft">Select Options</option>
@@ -102,8 +101,8 @@ if (isset($_POST['create_post'])) {
     </div>
 
     <div class="form-group">
-        <label for="post_tags">Post Tags</label>
-        <input type="text" class="form-control" name="post_tags">
+        <label for="post_tags">Post Tags</label> <i class="far fa-question-circle" data-toggle="tooltip" title="Separate words with commas."></i>
+        <input type="text" class="form-control" name="post_tags" placeholder="tag1, tag2, tag3">
     </div>
 
     <div class="form-group">
@@ -117,3 +116,8 @@ if (isset($_POST['create_post'])) {
 </form>
 
 <script src="../js/ckeditor.js"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+</script>
