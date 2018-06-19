@@ -71,6 +71,7 @@
                 <th>ID</th>
                 <th>User/Author</th>
                 <th>Title</th>
+                <th>Brief</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Image</th>
@@ -92,6 +93,7 @@
                     $post_id = $row['post_id'];
                     $post_user = $row['post_user'];
                     $post_author = $row['post_author'];
+                    $post_description = $row['post_brief'];
                     $post_title = $row['post_title'];
                     $post_category_id = $row['post_category_id'];
                     $post_status = $row['post_status'];

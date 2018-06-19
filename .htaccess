@@ -1,9 +1,11 @@
 RewriteEngine on
 
-RewriteRule ^(index|contact|login|registration|admin|search|profile)$ $1.php [NC,L]
+RewriteRule ^(index|contact|login|registration|admin|search)$ $1.php [NC,L]
 
 RewriteRule ^post/(\d+)$ post.php?p_id=$1 [NC,L]
 
 RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L]
 
 RewriteRule ^author_posts/(.+)$ author_posts.php?author=$1&p_id=$2 [NC,L]
+
+RewriteRule ^admin/(\d+)$ profile=$1 [NC,L]

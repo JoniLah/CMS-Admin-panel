@@ -1,30 +1,30 @@
 <?php
-if (isset($_POST['create_user'])) {
-    $user_firstname = $_POST['user_firstname'];
-    $user_lastname = $_POST['user_lastname'];
-    $user_role = $_POST['user_role'];
+    if (isset($_POST['create_user'])) {
+        $user_firstname = $_POST['user_firstname'];
+        $user_lastname = $_POST['user_lastname'];
+        $user_role = $_POST['user_role'];
 
-    $user_image = $_FILES['image']['name'];
-    $user_image_temp = $_FILES['image']['tmp_name'];
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name'];
 
-    $user_email = $_POST['user_email'];
-    $username = $_POST['username'];
-    $user_password = $_POST['user_password'];
+        $user_email = $_POST['user_email'];
+        $username = $_POST['username'];
+        $user_password = $_POST['user_password'];
 
-    // Encryption
-    $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+        // Encryption
+        $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
 
-    move_uploaded_file($user_image_temp , "../img/$user_image");
+        move_uploaded_file($user_image_temp , "../img/$user_image");
 
-    $query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role) ";
-    $query .= "VALUES('{$username}', '{$user_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_image}', '{$user_role}') ";
+        $query = "INSERT INTO users(username, user_password, user_firstname, user_lastname, user_email, user_image, user_role) ";
+        $query .= "VALUES('{$username}', '{$user_password}', '{$user_firstname}', '{$user_lastname}', '{$user_email}', '{$user_image}', '{$user_role}') ";
 
-    $create_user= mysqli_query($connection, $query);
+        $create_user= mysqli_query($connection, $query);
 
-    confirm($create_user);
+        confirm($create_user);
 
-    echo "User Created!" . " " . "<a href='users.php'>View Users</a>";
-}
+        echo "User Created!" . " " . "<a href='users.php'>View Users</a>";
+    }
 ?>
 
 <form action="" method="post" enctype="multipart/form-data">

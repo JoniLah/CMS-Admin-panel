@@ -14,7 +14,6 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <?php
-
                     $query = "SELECT * FROM categories";
                     $select_all_categories_query = mysqli_query($connection, $query);
 
@@ -44,21 +43,19 @@
 
                         echo "<li class='$category_class'><a href='/cms/category/{$cat_id}'>{$cat_title}</a></li>";
                     }
-
-
                 ?>
                 <li class="vl"></li> <!-- Separator -->
-                <?php if (!isset($_SESSION['role'])): ?>
-                    <li class="<?php echo $login_class; ?>"><a href="/cms/login">Login</a></li>
-                <?php else: ?>
-                    <li><a href="/cms/includes/logout.php">Logout</a></li>
-                <?php endif; ?>
                 <?php if (!isset($_SESSION['role'])): ?>
                     <li class="<?php echo $registration_class; ?>"><a href="/cms/registration">Registration</a></li>
                 <?php endif; ?>
                 <li class="<?php echo $contact_class; ?>"><a href="/cms/contact">Contact</a></li>
                 <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
                     <li><a href="/cms/admin">Admin</a></li>
+                <?php endif; ?>
+                <?php if (!isset($_SESSION['role'])): ?>
+                    <li class="<?php echo $login_class; ?>"><a href="/cms/login">Login</a></li>
+                <?php else: ?>
+                    <li><a href="/cms/includes/logout.php">Logout</a></li>
                 <?php endif; ?>
                 
                 <?php

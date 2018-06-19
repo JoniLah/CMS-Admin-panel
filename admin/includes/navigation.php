@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">CMS Admin</a>
+        <a class="navbar-brand" href="/cms/admin">CMS Admin</a>
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
@@ -18,7 +18,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['firstname'] . " "; echo $_SESSION['lastname']; ?><b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    <a href="/cms/admin/profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
                 </li>
                 <li>
                     <a href="settings.php"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
