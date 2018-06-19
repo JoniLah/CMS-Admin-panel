@@ -26,7 +26,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-file-text fa-5x"></i>
+                                        <i class="far fa-file-alt fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                     <div class='huge'><?php echo $posts = recordCount("posts"); ?></div>
@@ -162,10 +162,7 @@
 <?php include "includes/footer.php"; ?>
 
 <script>
-    $(document).ready(function() {
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-        
+    $(document).ready(function() {  
         const pusher = new Pusher('2f32002e2acd95219bec', {
             cluster: 'eu',
             encrypted: true

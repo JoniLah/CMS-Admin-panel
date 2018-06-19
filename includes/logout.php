@@ -8,6 +8,6 @@
     $_SESSION['lastname'] = null;
     $_SESSION['role'] = null;
 
-    header("Location: /cms/index");
+    header("Location: /cms");
 
 ?>

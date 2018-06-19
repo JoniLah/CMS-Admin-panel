@@ -10,7 +10,6 @@
         while ($row = mysqli_fetch_assoc($select_user_profile)) {
             $user_id = $row['user_id'];
             $username = $row['username'];
-            $user_password = $row['user_password'];
             $user_firstname = $row['user_firstname'];
             $user_lastname = $row['user_lastname'];
             $user_email = $row['user_email'];
@@ -24,14 +23,15 @@
 
     if (isset($_POST['update_profile'])) {
         $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
+        !empty($_POST['user_password']) ? $user_password = $_POST['user_password'] : $user_password = null;
+        $user_password !== null ? $user_password = password_hash($user_password, PASSWORD_BCRYPT, array("cost" => 12)) : "";
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
         $user_email = $_POST['user_email'];
 
         $query = "UPDATE users SET ";
         $query .= "username = '{$username}', ";
-        $query .= "user_password = '{$user_password}', ";
+        !empty($_POST['user_password']) ? $query .= "user_password = '{$user_password}', " : "";
         $query .= "user_firstname = '{$user_firstname}', ";
         $query .= "user_lastname = '{$user_lastname}', ";
         $query .= "user_email = '{$user_email}' ";
@@ -39,6 +39,12 @@
 
         $update_user = mysqli_query($connection, $query);
         confirm($update_user);
+        session_unset();
+        $_SESSION['user_id'] = $user_id;
+        $_SESSION['username'] = $username;
+        $_SESSION['firstname'] = $user_firstname;
+        $_SESSION['lastname'] = $user_lastname;
+        $_SESSION['role'] = "admin";
     }
 
 ?>

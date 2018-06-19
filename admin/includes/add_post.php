@@ -36,44 +36,48 @@ if (isset($_POST['create_post'])) {
 
     <div class="form-group">
         <label for="post_category">Category</label>
-        <select name="post_category" id="post_category">
-            <?php
-                $cat_id_edit = $_GET['edit'];
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_category" id="post_category">
+                <?php
+                    $cat_id_edit = $_GET['edit'];
 
-                $query = "SELECT * FROM categories";
-                $select_categories_edit = mysqli_query($connection, $query);
-                confirm($select_categories_edit);
+                    $query = "SELECT * FROM categories";
+                    $select_categories_edit = mysqli_query($connection, $query);
+                    confirm($select_categories_edit);
 
-                while ($row = mysqli_fetch_assoc($select_categories_edit)) {
-                    $cat_id = $row['cat_id'];
-                    $cat_title = $row['cat_title'];
+                    while ($row = mysqli_fetch_assoc($select_categories_edit)) {
+                        $cat_id = $row['cat_id'];
+                        $cat_title = $row['cat_title'];
 
-                    echo "<option value='{$cat_id}'>$cat_title</option>";
-                }
-            ?>
-        </select>
+                        echo "<option value='{$cat_id}'>$cat_title</option>";
+                    }
+                ?>
+            </select>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="post_user">Post Author</label>
-        <select name="post_user">
-            <?php
-                $query = "SELECT * FROM users";
-                $select_users = mysqli_query($connection, $query);
-                confirm($select_users);
-                ?>
-                <!-- Set our logged in user as default -->
-                <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_user">
                 <?php
+                    $query = "SELECT * FROM users";
+                    $select_users = mysqli_query($connection, $query);
+                    confirm($select_users);
+                    ?>
+                    <!-- Set our logged in user as default -->
+                    <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
+                    <?php
 
-                while ($row = mysqli_fetch_assoc($select_users)) {
-                    $user_id = $row['user_id'];
-                    $username = $row['username'];
+                    while ($row = mysqli_fetch_assoc($select_users)) {
+                        $user_id = $row['user_id'];
+                        $username = $row['username'];
 
-                    echo "<option value='{$username}'>$username</option>";
-                }
-            ?>
-        </select>
+                        echo "<option value='{$username}'>$username</option>";
+                    }
+                ?>
+            </select>
+        </div>
     </div>
 <!--
     <div class="form-group">
@@ -83,11 +87,13 @@ if (isset($_POST['create_post'])) {
 
     <div class="form-group">
         <label for="post_status">Post Status</label>
-        <select name="post_status" id="">
-            <option value="draft">Select Options</option>
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-        </select>
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_status" id="">
+                <option value="draft">Select Options</option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+            </select>
+        </div>
     </div>
 
     <div class="form-group">

@@ -134,13 +134,13 @@
                     echo "<td>{$post_views_count}</td>";
                     echo "<td>{$post_date}</td>";
                     echo "<td><a class='btn btn-info' href='../post.php?p_id=$post_id'>View Post</a></td>";
-                    echo "<td><a class='btn btn-warning' href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
+                    echo "<td><a class='btn btn-warning' href='posts.php?source=edit_post&p_id={$post_id}'><i class='fa fa-fw fa-trash'></i> Edit</a></td>";
                     ?>
 
                     <form method="post">
                         <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
                         <?php
-                            echo '<td><input rel="$post_id" href="javascript:void(0)" class="btn btn-danger delete_link" type="submit" name="delete" value="Delete"></td>';
+                            echo '<td><a><input rel="$post_id" href="javascript:void(0)" class="btn btn-danger delete_link" type="submit" name="delete" value="Delete"></a></td>';
                         ?>
                     </form>
 

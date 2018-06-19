@@ -1,8 +1,13 @@
 <?php
-
     if (isset($_GET['edit_user'])) {
         $user_id = $_GET['edit_user'];
 
+        if ($stmt = mysqli_prepare($connection, "SELECT user_id, username, user_password, user_firstname, user_lastname, user_email, user_image, user_role FROM users WHERE user_id = ?")) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_bind_result($stmt, $user_id, $username, $user_password, $user_firstname, $user_lastname, $user_email, $user_image, $user_role);
+            
+        }
         $query = "SELECT * FROM users WHERE user_id = $user_id";
         $select_user = mysqli_query($connection, $query);
         
@@ -12,10 +17,12 @@
         while ($row = mysqli_fetch_assoc($select_user)) {
             $user_id = $row['user_id'];
             $username = $row['username'];
+            $original_username = $username; // To check if the user changed their username
             $user_password = $row['user_password'];
             $user_firstname = $row['user_firstname'];
             $user_lastname = $row['user_lastname'];
             $user_email = $row['user_email'];
+            $original_email = $user_email; // To check if the user changed their email
             $user_image = $row['user_image'];
             $user_role = $row['user_role'];
         }
@@ -23,52 +30,136 @@
         header("Location: index.php");
     }
 
-
     if (isset($_POST['update_user'])) {
         $username = $_POST['username'];
-        $user_password = $_POST['user_password'];
+        !empty($_POST['user_password']) ? $user_password = $_POST['user_password'] : $user_password = null;
+        $user_password !== null ? $user_password = password_hash($user_password, PASSWORD_BCRYPT, array("cost" => 12)) : "";
         $user_firstname = $_POST['user_firstname'];
         $user_lastname = $_POST['user_lastname'];
         $user_email = $_POST['user_email'];
         $user_role = $_POST['user_role'];
 
-        if (!empty($user_password)) {
-            $query = "SELECT user_password FROM users WHERE user_id = $user_id";
-            $get_user = mysqli_query($connection, $query);
-            confirm($get_user);
+        $error = [
+            'firstname' => '',
+            'lastname' => '',
+            'username' => '',
+            'email' => ''
+        ];
 
-            $row = mysqli_fetch_array($get_user);
-
-            $db_user_password = $row['user_password'];
+        /*
+            *** ERROR VALIDATION ***
+        */
+        
+        // Firstname
+        // Allow only letters for the first name
+        if (!empty($user_firstname)) {
+            if (!ctype_alpha($user_firstname)) {
+                $error["firstname"] = "First name should only contain letters!";
+            }
         }
 
-        $query = "UPDATE users SET ";
-        $query .= "username = '{$username}', ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_email = '{$user_email}', ";
-
-        // If user changed the password
-        if ($db_user_password != $user_password) {
-            $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
-            $query .= "user_password = '{$hashed_password}', ";
+        // Lastname
+        // Allow only letters for the last name
+        if (!empty($user_lastname)) {
+            if (!ctype_alpha($user_lastname)) {
+                $error["lastname"] = "Last name should only contain letters!";
+            }
         }
 
-        $query .= "user_role = '{$user_role}' ";
-        $query .= "WHERE user_id = {$user_id}";
+        // Username
+        if ($original_username !== $username) {
+            // Username has been changed, check if the username is available
+            if (usernameExists($username)) {
+                $error["username"] = "Username is already taken!";
+            }
 
-        $update_user = mysqli_query($connection, $query);
-        confirm($update_user);
+            // Must be over 2 characters
+            if (strlen($username) < 3) {
+                $error["username"] = "Username needs to be longer!";
+            }
 
-        echo "User updated! " . "<a href='users.php'>View users</a>";
+            // Must not be over 20 characters
+            if (strlen($username) > 20) {
+                $error["username"] = "Username cannot be longer than 20 characters!";
+            }
+            
+            // Must not be empty
+            if (empty($username)) {
+                $error["username"] = "Username cannot be empty!";
+            }
+            
+            // Prevent using symbols
+            if (!ctype_alnum($username)) {
+                $error["username"] = "Username should only contain numbers and/or letters!";
+            }
+        }
 
-        $_SESSION['username'] = $username;
-        $_SESSION['firstname'] = $user_firstname;
-        $_SESSION['lastname'] = $user_lastname;
-        $_SESSION['role'] = $user_role;
-    }
+        // Email
+        if ($original_email !== $user_email) {
+            // Username has been changed, check if the username is available
+            if (usernameExists($user_email)) {
+                $error["email"] = "Email is already taken!";
+            }
     
+            if (empty($user_email)) {
+                $error["email"] = "Email cannot be empty!";
+            }
+    
+            // In case the user removes email type from the input field
+            if (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
+                $error["email"] = "Invalid email format!"; 
+            }
+        }
 
+        foreach ($error as $key => $value) {
+            if (empty($value)) {
+                unset($error[$key]);
+            }
+        }
+
+        // Update user
+        if (empty($error)) {
+            if (!empty($user_password)) {
+                $query = "SELECT user_password FROM users WHERE user_id = $user_id";
+                $get_user = mysqli_query($connection, $query);
+                confirm($get_user);
+    
+                $row = mysqli_fetch_array($get_user);
+    
+                $db_user_password = $row['user_password'];
+            }
+    
+            $query = "UPDATE users SET ";
+            $query .= "username = '{$username}', ";
+            $query .= "user_firstname = '{$user_firstname}', ";
+            $query .= "user_lastname = '{$user_lastname}', ";
+            $query .= "user_email = '{$user_email}', ";
+            // If user changed the password
+            !empty($_POST['user_password']) ? $query .= "user_password = '{$user_password}', " : "";
+            $query .= "user_role = '{$user_role}' ";
+            $query .= "WHERE user_id = {$user_id}";
+    
+            $update_user = mysqli_query($connection, $query);
+            confirm($update_user);
+    
+            echo "User updated! " . "<a href='users.php'>View users</a>";
+            /* Check if the ID is the same as the person who edits these
+            session_unset();
+            $_SESSION['username'] = $username;
+            $_SESSION['firstname'] = $user_firstname;
+            $_SESSION['lastname'] = $user_lastname;
+            $_SESSION['role'] = $user_role;*/
+    
+    
+            $query = "UPDATE users SET ";
+            $query .= "username = '{$username}', ";
+            !empty($_POST['user_password']) ? $query .= "user_password = '{$user_password}', " : "";
+
+            // Pusher
+            $data['message'] = "A new registered user: " . $username;
+            $pusher->trigger("notifications", "new_user", $data);
+        }
+    }
 ?>
 
 <form action="" method="post" enctype="multipart/form-data">

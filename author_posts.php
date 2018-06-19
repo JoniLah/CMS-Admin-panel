@@ -46,7 +46,7 @@
                         </p>
                         <p><span class="glyphicon glyphicon-time"></span> <?php echo $post_date; ?></p>
                         <hr>
-                        <img class="img-responsive" src="img/<?php echo $post_image; ?>" alt="">
+                        <img class="img-responsive" src="/cms/img/<?php echo $post_image; ?>" alt="">
                         <hr>
                         <p><?php echo $post_content ?></p>
                         <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>

@@ -51,7 +51,11 @@
                     } else {
                         $count = ceil($count / $per_page);
 
-                        $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                        if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
+                            $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                        } else {
+                            $query = "SELECT * FROM posts WHERE post_status = 'published' ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                        }
                         $select_all_posts_query = mysqli_query($connection, $query);
 
                         while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
@@ -69,7 +73,7 @@
 
                             <!-- First Blog Post -->
                             <h2>
-                                <a href="post/<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
+                                <a href="/cms/post/<?php echo $post_id; ?>"><?php echo $post_title; ?></a>
                             </h2>
                             <p class="lead">
                             by <a href="author_posts.php?author=<?php echo empty($post_author) ? $post_user : $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo empty($post_author) ? $post_user : $post_author; ?></a>
