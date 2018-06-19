@@ -36,7 +36,7 @@
                     }
 
                     $find_post_count_query = mysqli_query($connection, $post_query_count);
-                    $count = mysqli_num_rows($find_post_count_query);
+                    $total_count = $count = mysqli_num_rows($find_post_count_query);
 
                     if ($count < 1) {
                         echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";

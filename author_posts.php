@@ -28,7 +28,7 @@
 
                     $query = "SELECT * FROM posts WHERE post_author = '$post_author_url' OR post_user = '$post_author_url' ORDER BY post_id DESC";
                     $select_all_posts_query = mysqli_query($connection, $query);
-                    $count = mysqli_num_rows($select_all_posts_query);
+                    $total_count = $count = mysqli_num_rows($select_all_posts_query);
 
                     while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
                         $count = ceil($count / $per_page);

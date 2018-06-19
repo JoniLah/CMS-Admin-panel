@@ -73,7 +73,7 @@
                         if (mysqli_stmt_num_rows($stmt) < 1) {
                             echo "<h2 class='text-center'>We're sorry, there's no posts available!</h2>";
                         }
-                        $count = mysqli_stmt_num_rows($stmt);
+                        $total_count = $count = mysqli_stmt_num_rows($stmt);
                             while (mysqli_stmt_fetch($stmt)):
                                 $count = ceil($count / $per_page);
                                 ?>
