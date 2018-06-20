@@ -22,7 +22,7 @@
 
         $post_user = $_POST['post_user'];
         $post_title = $_POST['title'];
-        $post_description = $_POST['description'];
+        $post_description = mysqli_real_escape_string($connection, $_POST['description']);
         $post_category_id = $_POST['post_category'];
         $post_status = $_POST['post_status'];
         $post_image = $_FILES['image']['name'];
