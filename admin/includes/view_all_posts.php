@@ -119,6 +119,7 @@
                     }
    
                     echo "<td>{$post_title}</td>";
+                    echo !empty($post_description) ? "<td>{$post_description}</td>" : "<td></td>";
                     echo !empty($cat_title) ? "<td>{$cat_title}</td>" : "<td></td>";
                     echo "<td>{$post_status}</td>";
                     echo "<td><img width='100' src='../img/{$post_image}' alt=''></td>";

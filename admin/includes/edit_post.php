@@ -1,24 +1,21 @@
 <?php
 
     if (isset($_GET['p_id'])) {
-        $p_id = $_GET['p_id'];
+        $post_id = $_GET['p_id'];
     }
 
-    $query = "SELECT * FROM posts WHERE post_id = $p_id";
-    $select_posts_by_id = mysqli_query($connection, $query);
+    if ($stmt = mysqli_prepare($connection, "SELECT post_id, post_category_id, post_title, post_brief, post_author, post_user, post_date, post_image, post_content, post_tags, post_comment_count, post_status, post_views_count FROM posts WHERE post_id = ?")) {
+        mysqli_stmt_bind_param($stmt, "i", $post_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $post_id, $post_category_id, $post_title, $post_brief, $post_author, $post_user, $post_date, $post_image, $post_content, $post_tags, $post_comment_count, $post_status, $post_views_count);
+        mysqli_stmt_fetch($stmt);
+    }
 
-    while ($row = mysqli_fetch_assoc($select_posts_by_id)) {
-        $post_id = $row['post_id'];
-        $post_author = $row['post_author'];
-        $post_author = $row['post_user'];
-        $post_title = $row['post_title'];
-        $post_category_id = $row['post_category_id'];
-        $post_status = $row['post_status'];
-        $post_image = $row['post_image'];
-        $post_tags = $row['post_tags'];
-        $post_comment_count= $row['post_comment_count'];
-        $post_date = $row['post_date'];
-        $post_content = mysqli_real_escape_string($connection, $row['post_content']);
+    if ($stmt = mysqli_prepare($connection, "SELECT categories.cat_id, posts.post_category_id FROM categories, posts WHERE categories.cat_id = ?")) {
+        mysqli_stmt_bind_param($stmt, "i", $post_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $post_category_id);
+        mysqli_stmt_fetch($stmt);
     }
 
     if (isset($_POST['update_post'])) {
@@ -78,65 +75,82 @@
     </div>
 
     <div class="form-group">
+    <label for="description">Short Description</label> <i class="far fa-question-circle" data-toggle="tooltip" title="A short description that displays in the article preview only."></i>
+        <input type="text" value="<?php echo $post_brief; ?>" class="form-control" name="description">
+    </div>
+
+    <div class="form-group">
         <label for="post_category">Category</label>
-        <select name="post_category" id="post_category">
-            <?php
-                //$cat_id_edit = $_GET['edit'];
-
-                $query = "SELECT * FROM categories";
-                $select_categories_edit = mysqli_query($connection, $query);
-                confirm($select_categories_edit);
-
-                echo "<option value='$username'>$username</option>";
-
-                while ($row = mysqli_fetch_assoc($select_categories_edit)) {
-                    $cat_id = $row['cat_id'];
-                    $cat_title = $row['cat_title'];
-
-                    // Avoid duplicate categories
-                    if ($cat_id == $post_category_id) {
-                        echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
-                    } else {
-                        echo "<option value='{$cat_id}'>$cat_title</option>";
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_category" id="post_category">
+                <?php
+                    //$cat_id_edit = $_GET['edit'];
+                    if ($stmt = mysqli_prepare($connection, "SELECT cat_id, cat_title FROM categories")) {
+                        mysqli_stmt_execute($stmt);
+                        mysqli_stmt_bind_result($stmt, $cat_id, $cat_title);
+                        while(mysqli_stmt_fetch($stmt)) {
+                            // Avoid duplicate categories
+                            if ($cat_id == $post_category_id) {
+                                echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+                            } else {
+                                echo "<option value='{$cat_id}'>$cat_title</option>";
+                            }
+                        }
                     }
-                }
-            ?>
-        </select>
+    /*
+                    $query = "SELECT * FROM categories";
+                    $select_categories_edit = mysqli_query($connection, $query);
+                    confirm($select_categories_edit);
+
+                    while ($row = mysqli_fetch_assoc($select_categories_edit)) {
+                        $cat_id = $row['cat_id'];
+                        $cat_title = $row['cat_title'];
+
+                        
+                    }*/
+                ?>
+            </select>
+        </div>
     </div>
 
     <div class="form-group">
         <label for="post_user">Post Author</label>
-        <select name="post_user">
-            <?php
-                $query = "SELECT * FROM users";
-                $select_users = mysqli_query($connection, $query);
-                confirm($select_users);
-                ?>
-                <!-- Set our logged in user as default -->
-                <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_user">
                 <?php
+                    $query = "SELECT * FROM users";
+                    $select_users = mysqli_query($connection, $query);
+                    confirm($select_users);
+                    ?>
+                    <!-- Set our logged in user as default -->
+                    <option value="<?php echo $_SESSION['username']; ?>"><?php echo $_SESSION['username']; ?></option>
+                    <?php
 
-                while ($row = mysqli_fetch_assoc($select_users)) {
-                    $user_id = $row['user_id'];
-                    $username = $row['username'];
+                    while ($row = mysqli_fetch_assoc($select_users)) {
+                        $user_id = $row['user_id'];
+                        $username = $row['username'];
 
-                    echo "<option value='{$username}'>$username</option>";
-                }
-            ?>
-        </select>
+                        echo "<option value='{$username}'>$username</option>";
+                    }
+                ?>
+            </select>
+        </div>
     </div>
 
     <div class="form-group">
-        <select name="post_status" id="">
-            <option value="<?php echo $post_status; ?>"><?php echo $post_status; ?></option>
-            <?php
-                if($post_status == "published") {
-                    echo "<option value='draft'>draft</option>";
-                } else {
-                    echo "<option value='published'>published</option>";
-                }
-            ?>
-        </select>
+    <label for="post_status">Post Status</label> <i class="far fa-question-circle" data-toggle="tooltip" title="Draft is only displayed to admin users in the front page."></i>
+        <div class="custom-select" style="width: 200px;">
+            <select name="post_status" id="">
+                <option value="<?php echo $post_status; ?>"><?php echo $post_status; ?></option>
+                <?php
+                    if($post_status == "published") {
+                        echo "<option value='draft'>draft</option>";
+                    } else {
+                        echo "<option value='published'>published</option>";
+                    }
+                ?>
+            </select>
+        </div>
     </div>
 
     <div class="form-group">
@@ -162,3 +176,8 @@
 </form>
 
 <script src="../js/ckeditor.js"></script>
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip(); 
+    });
+</script>

@@ -76,7 +76,6 @@ if (isset($_POST['create_post'])) {
                             if ($username !== $_SESSION['username']) {
                                 echo "<option value='{$username}'>$username</option>";
                             }
-                            
                         }
                     }
                 ?>
