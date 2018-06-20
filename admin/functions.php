@@ -134,7 +134,7 @@
         if ($stmt = mysqli_prepare($connection, "SELECT username FROM users WHERE username = ?")) {
             mysqli_stmt_bind_param($stmt, "s", $username);
             mysqli_stmt_execute($stmt);
-            return mysqli_stmt_num_rows() > 0 ? true : false;
+            return mysqli_stmt_num_rows($stmt) > 0 ? true : false;
         }
     }
 
@@ -143,7 +143,7 @@
         if ($stmt = mysqli_prepare($connection, "SELECT user_email FROM users WHERE user_email = ?")) {
             mysqli_stmt_bind_param($stmt, "s", $email);
             mysqli_stmt_execute($stmt);
-            return mysqli_stmt_num_rows() > 0 ? true : false;
+            return mysqli_stmt_num_rows($stmt) > 0 ? true : false;
         }
     }
 
