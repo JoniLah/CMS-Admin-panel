@@ -49,23 +49,23 @@
 
                         // Check if we've been logged in as admin
                         if (isset($_SESSION['username']) && isAdmin($_SESSION['username'])) {
-                            $stmt1 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? ORDER BY post_id DESC");
+                            $stmt1 = mysqli_prepare($connection, "SELECT post_id, post_title, post_brief, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? ORDER BY post_id DESC");
 
                         } else if ((isset($_SESSION['username']) && !isAdmin($_SESSION['username'])) || (!isset($_SESSION['username']))) {
-                            $stmt2 = mysqli_prepare($connection, "SELECT post_id, post_title, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? ORDER BY post_id DESC");
+                            $stmt2 = mysqli_prepare($connection, "SELECT post_id, post_title, post_brief, post_author, post_user, post_date, post_image, post_content FROM posts WHERE post_category_id = ? AND post_status = ? ORDER BY post_id DESC");
                             $published = "published";
                         }
 
                         if (isset($stmt1)) {
                             mysqli_stmt_bind_param($stmt1, "i", $post_category_id);
                             mysqli_stmt_execute($stmt1);
-                            mysqli_stmt_bind_result($stmt1, $post_id, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
+                            mysqli_stmt_bind_result($stmt1, $post_id, $post_title, $post_description, $post_author, $post_user, $post_date, $post_image, $post_content);
                             $stmt = $stmt1;
                             mysqli_stmt_store_result($stmt);
                         } else {
                             mysqli_stmt_bind_param($stmt2, "is", $post_category_id, $published);
                             mysqli_stmt_execute($stmt2);
-                            mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_author, $post_user, $post_date, $post_image, $post_content);
+                            mysqli_stmt_bind_result($stmt2, $post_id, $post_title, $post_description, $post_author, $post_user, $post_date, $post_image, $post_content);
                             $stmt = $stmt2;
                             mysqli_stmt_store_result($stmt);
                         }
@@ -89,7 +89,7 @@
                                 <hr>
                                 <img class="img-responsive" src="/cms/img/<?php echo imgPlaceholder($post_image); ?>" alt="">
                                 <hr>
-                                <p><?php echo $post_content; ?></p>
+                                <h4><?php echo strip_tags($post_description); ?></h4>
                                 <a class="btn btn-primary" href="/cms/post/<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
     
                                 <hr>

@@ -57,10 +57,8 @@
                             $post_user = $row['post_user'];
                             $post_date = $row['post_date'];
                             $post_image = $row['post_image'];
-                            $post_content = substr($row['post_content'], 0, 150); // Substract to 0 char to 150
+                            $post_description = $row['post_brief'];
                             $post_status = $row['post_status'];
-
-
                             ?>
 
                             <!-- First Blog Post -->
@@ -74,7 +72,7 @@
                             <hr>
                             <a href="/cms/post/<?php echo $post_id ?>"><img class="img-responsive" src="img/<?php echo imgPlaceholder($post_image); ?>" alt=""></a>
                             <hr>
-                            <p><?php echo $post_content ?></p>
+                            <h4><?php echo strip_tags($post_description); ?></h4>
                             <a class="btn btn-primary" href="/cms/post/<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                             <hr>

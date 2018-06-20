@@ -31,6 +31,7 @@
                             while ($row = mysqli_fetch_assoc($search_query)) {
                                 $post_id = $row['post_id'];
                                 $post_title = $row['post_title'];
+                                $post_description = $row['post_brief'];
                                 $post_author = $row['post_author'];
                                 $post_user = $row['post_user'];
                                 $post_date = $row['post_date'];
@@ -54,7 +55,7 @@
                                 <hr>
                                 <a href="/cms/post/<?php echo $post_id ?>"><img class="img-responsive" src="img/<?php echo $post_image; ?>" alt=""></a>
                                 <hr>
-                                <p><?php echo $post_content; ?></p>
+                                <h4><?php echo strip_tags($post_description); ?></h4>
                                 <a class="btn btn-primary" href="post.php?p_id=<?php echo $post_id; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                                 <hr>
