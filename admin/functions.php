@@ -188,6 +188,8 @@
                 $_SESSION['firstname'] = $db_user_firstname;
                 $_SESSION['lastname'] = $db_user_lastname;
                 $_SESSION['role'] = $db_user_role;
+                // Set last login
+                mysqli_query($connection, "UPDATE users SET last_login = now() WHERE user_id = $db_user_id");
                 $result = mysqli_query($connection, "SELECT * FROM user_settings WHERE user_settings_id = $db_user_id");
                 confirm($result);
                 while ($row = mysqli_fetch_array($result)) {
