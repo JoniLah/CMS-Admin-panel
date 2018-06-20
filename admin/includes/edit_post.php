@@ -22,6 +22,7 @@
 
         $post_user = $_POST['post_user'];
         $post_title = $_POST['title'];
+        $post_description = $_POST['description'];
         $post_category_id = $_POST['post_category'];
         $post_status = $_POST['post_status'];
         $post_image = $_FILES['image']['name'];
@@ -33,7 +34,7 @@
 
         // If user didn't reupload a picture, use the old one
         if (empty($post_image)) {
-            $query = "SELECT * FROM posts WHERE post_id = $p_id";
+            $query = "SELECT * FROM posts WHERE post_id = $post_id";
             $select_image = mysqli_query($connection, $query);
 
             while ($row = mysqli_fetch_array($select_image)) {
@@ -43,6 +44,7 @@
 
         $query = "UPDATE posts SET ";
         $query .= "post_title = '{$post_title}', ";
+        $query .= "post_brief = '{$post_description}', ";
         $query .= "post_category_id = '{$post_category_id}', ";
         $query .= "post_date = now(), ";
         $query .= "post_user = '{$post_user}', ";
@@ -160,7 +162,7 @@
     </div>
 
     <div class="form-group">
-        <label for="post_tags">Post Tags</label>
+        <label for="post_tags">Post Tags</label> <i class="far fa-question-circle" data-toggle="tooltip" title="Separate words with commas."></i>
         <input type="text" value="<?php echo $post_tags; ?>" class="form-control" name="post_tags">
     </div>
 
