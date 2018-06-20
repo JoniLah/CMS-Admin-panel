@@ -46,7 +46,6 @@
         $query .= "post_title = '{$post_title}', ";
         $query .= "post_brief = '{$post_description}', ";
         $query .= "post_category_id = '{$post_category_id}', ";
-        $query .= "post_date = now(), ";
         $query .= "post_user = '{$post_user}', ";
         $query .= "post_status = '{$post_status}', ";
         $query .= "post_tags = '{$post_tags}', ";
