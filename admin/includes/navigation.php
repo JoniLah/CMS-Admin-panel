@@ -48,10 +48,10 @@
                 </ul>
             </li>
             <li>
-                <a href="./categories.php"><i class="fas fa-book-open"></i> Categories</a>
+                <a href="./categories.php"><i class="fa fa-list"></i> Categories</a>
             </li>
             <li>
-                <a href="./comments.php"><i class="fas fa-comment-dots"></i> Comments</a>
+                <a href="./comments.php"><i class="fa fa-comments"></i> Comments</a>
             </li>
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#users-dropdown"><i class="fas fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
@@ -65,7 +65,7 @@
                 </ul>
             </li>
             <li>
-                <a href="profile.php"><i class="fas fa-user-tie"></i> Profile</a>
+                <a href="profile.php"><i class="fa fa-user"></i> Profile</a>
             </li>
         </ul>
     </div>

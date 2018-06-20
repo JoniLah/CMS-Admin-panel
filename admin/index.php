@@ -26,7 +26,7 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="far fa-file-alt fa-5x"></i>
+                                        <i class="fas fa-newspaper fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                     <div class='huge'><?php echo $posts = recordCount("posts"); ?></div>
