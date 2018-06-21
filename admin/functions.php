@@ -79,6 +79,11 @@
                 include("../includes/db.php");
 
                 $session = session_id();
+                $ip_address = isset($_SERVER['HTTP_CLIENT_IP'])
+                            ? $_SERVER['HTTP_CLIENT_IP'] 
+                            : isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+                                ? $_SERVER['HTTP_X_FORWARDED_FOR']
+                                : $_SERVER['REMOTE_ADDR'];
                 $time = time();
                 $time_out_in_seconds = 5;
                 $time_out = ($time - $time_out_in_seconds);
@@ -89,9 +94,9 @@
 
                 // If the user is new, add new row for the corresponding user
                 if ($count_user_time == null) {
-                    mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES ('$session', '$time')");
+                    mysqli_query($connection, "INSERT INTO users_online(session, time, ip_address) VALUES ('$session', '$time', '$ip_address')");
                 } else { // Else just add the time for its session
-                    mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session'");
+                    mysqli_query($connection, "UPDATE users_online SET time = '$time', ip_address = '$ip_address' WHERE session = '$session'");
                 }
 
                 // Count the amount of users online

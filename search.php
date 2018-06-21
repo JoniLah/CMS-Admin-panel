@@ -28,6 +28,12 @@
                         if ($count == 0) {
                             echo "<h2 class='text-center'>We're sorry, there's no posts available with '$search' tags!</h2>";
                         } else {
+                            ?>
+                            <h1 class="page-header">
+                                Search Results for
+                                <small><?php echo $search; ?></small>
+                            </h1>
+                            <?php
                             while ($row = mysqli_fetch_assoc($search_query)) {
                                 $post_id = $row['post_id'];
                                 $post_title = $row['post_title'];
@@ -38,11 +44,6 @@
                                 $post_image = $row['post_image'];
                                 $post_content = $row['post_content'];
                                 ?>
-
-                                <h1 class="page-header">
-                                    Search Results for
-                                    <small><?php echo $search; ?></small>
-                                </h1>
 
                                 <!-- First Blog Post -->
                                 <h2>
